@@ -6,6 +6,7 @@ const node = (RED) => {
   RED.nodes.registerType(
     'strategy-genetic-charging',
     function callback(config) {
+      config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
       RED.nodes.createNode(this, config)
 
       const {
