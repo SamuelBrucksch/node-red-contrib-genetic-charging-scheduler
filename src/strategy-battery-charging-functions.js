@@ -172,7 +172,7 @@ const toSchedule = (props, phenotype) => {
       schedule.at(-1).duration += period.duration
       schedule.at(-1).cost += period.cost
       schedule.at(-1).charge += period.charge
-      schedule.at(-1).socEnd = period.socEnd
+      schedule.at(-1).socEnd = Math.round(period.socEnd*1000)/10
     } else {
       schedule.push({
         start: addMinutes(periodStart, period.start),
@@ -181,8 +181,8 @@ const toSchedule = (props, phenotype) => {
         duration: period.duration,
         cost: period.cost,
         charge: period.charge,
-        socStart: period.socStart,
-        socEnd: period.socEnd,
+        socStart: Math.round(period.socStart*1000)/10,
+        socEnd: Math.round(period.socEnd*1000)/10,
       })
     }
   }
