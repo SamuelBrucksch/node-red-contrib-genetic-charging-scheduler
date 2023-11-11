@@ -15,11 +15,11 @@ jobs:
           flags: --immutable-cache
           cache: yarn
       - name: Lint
-        run: npm run lint
+        run: yarn run lint
       - name: Prettier
-        run: npm run prettier
+        run: yarn run prettier
       - name: Test
-        run: npm run test
+        run: yarn run test
       #- name: Release
       #  env:
       #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
