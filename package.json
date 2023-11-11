@@ -1,5 +1,5 @@
 {
-  "name": "node-red-contrib-genetic-charging-strategy",
+  "name": "node-red-contrib-genetic-charging-strategy2",
   "version": "1.0.0",
   "description": "A module for Node-RED that adds a battery charging strategy to node-red-contrib-power-saver. It uses genetic algorithms to find the best schedule",
   "main": "dist/main.js",
