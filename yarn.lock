@@ -8698,9 +8698,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-red-contrib-genetic-charging-strategy@workspace:.":
+"node-red-contrib-genetic-charging-strategy2@workspace:.":
   version: 0.0.0-use.local
-  resolution: "node-red-contrib-genetic-charging-strategy@workspace:."
+  resolution: "node-red-contrib-genetic-charging-strategy2@workspace:."
   dependencies:
     "@babel/core": 7.23.2
     "@jest/globals": 29.7.0
