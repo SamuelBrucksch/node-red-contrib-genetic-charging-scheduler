@@ -50,10 +50,53 @@
         validate: RED.validators.number(),
       },
       combineSchedules: {
-        value: 1,
+        value: true,
         required: true,
-        validate: RED.validators.number(),
       },
+    },
+    oneditprepare: () => {
+      $('#node-input-combineSchedules').typedInput({
+        type: 'bool',
+        types: ['bool'],
+      })
+      $('#node-input-excessPvEnergyUse').typedInput({
+        type: 'excessPvEnergyUse',
+        types: [
+          {
+            value: 'excessPvEnergyUse',
+            options: [
+              { value: '0', label: 'Grid feed-in' },
+              { value: '1', label: 'Charge battery' },
+            ],
+          },
+        ],
+      })
+      $('#node-input-averageConsumption').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxOutputPower').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxInputPower').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxEnergy').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-numberOfPricePeriods').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-populationSize').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
+      $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
@@ -99,6 +142,13 @@
     >
     <input type="text" id="node-input-averageConsumption" />
   </div>
+  <div class="form-row">
+    <label for="node-input-excessPvEnergyUse" style="width: 240px"
+      >Excessive PV Energy</label
+    >
+    <input type="text" id="node-input-excessPvEnergyUse" />
+  </div>
+
   <h3>Genetic algorithm</h3>
   <div class="form-row">
     <label for="node-input-populationSize" style="width: 240px"
@@ -128,18 +178,10 @@
     <input type="text" id="node-input-numberOfPricePeriods" />
   </div>
 
-  <h3>Excessive PV Energy</h3>
-  <div class="form-row">
-    <label for="node-input-excessPvEnergyUse" style="width: 240px"
-      >Feed-In (0) or Charge (1)</label
-    >
-    <input type="text" id="node-input-excessPvEnergyUse" />
-  </div>
-
   <h3>Config</h3>
   <div class="form-row">
     <label for="node-input-combineSchedules" style="width: 240px"
-      >Combine schedules (0/1)</label
+      >Combine schedules</label
     >
     <input type="text" id="node-input-combineSchedules" />
   </div>

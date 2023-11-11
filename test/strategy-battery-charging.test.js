@@ -247,7 +247,7 @@ describe('Battery charging strategy Node', () => {
         batteryMaxOutputPower: 3.5,
         averageConsumption: 1,
         wires: [['n2']],
-        excessPvEnergyUse: 1,
+        excessPvEnergyUse: "1",
         combineSchedules: 1,
       },
       { id: 'n2', type: 'helper' },
@@ -258,6 +258,9 @@ describe('Battery charging strategy Node', () => {
       n2.on('input', function inputCallback(msg) {
         expect(msg).toHaveProperty('payload')
         expect(msg.payload).toHaveProperty('schedule')
+
+        // is converted to int on input
+        expect(msg.payload.excessPvEnergyUse).toBe(1)
 
         console.log(JSON.stringify(msg.payload, null, 1))
         done()
