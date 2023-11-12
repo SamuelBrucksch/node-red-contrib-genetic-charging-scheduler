@@ -1,16 +1,28 @@
 module.exports = {
-  root: true,
   env: {
-    es6: true,
-    node: true,
-    'jest/globals': true,
+    browser: true,
+    commonjs: true,
+    es2021: true,
+    'jest/globals': true
   },
-  files: ['*.js', 'src/*.js', 'test/*.js'],
-  extends: ['airbnb', 'plugin:prettier/recommended'],
-  plugins: ['jest', 'prettier'],
+  extends: 'standard',
+  overrides: [
+    {
+      env: {
+        node: true
+      },
+      files: [
+        '.eslintrc.{js,cjs}'
+      ],
+      parserOptions: {
+        sourceType: 'script'
+      }
+    }
+  ],
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+    ecmaVersion: 'latest'
   },
-  rules: { 'no-param-reassign': ['error', { props: false }] },
+  rules: {
+  },
+  plugins: ['jest']
 }
