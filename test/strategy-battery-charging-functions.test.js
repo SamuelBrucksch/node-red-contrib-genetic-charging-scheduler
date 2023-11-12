@@ -146,8 +146,8 @@ describe('Calculate', () => {
 
         const startDate = new Date(e.start)
         const endDate = new Date(startDate.getTime() + (e.duration - 1) * 60000)
-        const charge = e.activity == 1 ? '+' : '-'
-        if (startDate.getDay() == endDate.getDay()) {
+        const charge = e.activity === 1 ? '+' : '-'
+        if (startDate.getDay() === endDate.getDay()) {
           total.push(touPattern(startDate, endDate, charge))
         } else {
           const endDateDay1 = new Date(startDate)

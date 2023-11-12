@@ -86,7 +86,7 @@ const calculateDischargeScore = (props) => {
 
   const consumedFromProduction = Math.min(consumption, production)
   const batteryChargeFromProduction =
-    excessPvEnergyUse == CHARGE
+    excessPvEnergyUse === CHARGE
       ? Math.min(production - consumedFromProduction, maxCharge)
       : 0
   const consumedFromBattery = Math.min(
@@ -116,7 +116,7 @@ const calculateNormalScore = (props) => {
 
   const consumedFromProduction = Math.min(consumption, production)
   const batteryChargeFromProduction =
-    excessPvEnergyUse == CHARGE
+    excessPvEnergyUse === CHARGE
       ? Math.min(production - consumedFromProduction, maxCharge)
       : 0
   const soldFromProduction =

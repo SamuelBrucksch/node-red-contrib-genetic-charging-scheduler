@@ -6,6 +6,16 @@ const node = (RED) => {
   RED.nodes.registerType(
     'strategy-genetic-charging',
     function callback(config) {
+      config.populationSize = parseInt(config.populationSize)
+      config.numberOfPricePeriods = parseInt(config.numberOfPricePeriods)
+      config.generations = parseInt(config.generations)
+      config.mutationRate = parseInt(config.mutationRate)
+      config.batteryMaxEnergy = parseFloat(config.batteryMaxEnergy)
+      config.batteryMaxInputPower = parseFloat(config.batteryMaxInputPower)
+      config.batteryMaxOutputPower = parseFloat(config.batteryMaxOutputPower)
+      config.averageConsumption = parseFloat(config.averageConsumption)
+      config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
+      config.combineSchedules = config.combineSchedules === 'true'
       RED.nodes.createNode(this, config)
 
       const {
@@ -50,8 +60,12 @@ const node = (RED) => {
 
         if (strategy && Object.keys(strategy).length > 0) {
           msg.payload.schedule = strategy.best.schedule
-          msg.payload.excessPvEnergyUse = strategy.best.excessPvEnergyUse
           msg.payload.cost = strategy.best.cost
+          msg.payload.config = {
+            combineSchedules,
+            excessPvEnergyUse:
+              excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN',
+          }
           msg.payload.noBattery = {
             schedule: strategy.noBattery.schedule,
             excessPvEnergyUse: strategy.noBattery.excessPvEnergyUse,
