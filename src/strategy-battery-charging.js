@@ -1,11 +1,11 @@
 const {
-  calculateBatteryChargingStrategy,
+  calculateBatteryChargingStrategy
 } = require('./strategy-battery-charging-functions')
 
 const node = (RED) => {
   RED.nodes.registerType(
     'strategy-genetic-charging',
-    function callback(config) {
+    function callback (config) {
       config.populationSize = parseInt(config.populationSize)
       config.numberOfPricePeriods = parseInt(config.numberOfPricePeriods)
       config.generations = parseInt(config.generations)
@@ -16,6 +16,7 @@ const node = (RED) => {
       config.averageConsumption = parseFloat(config.averageConsumption)
       config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
       config.combineSchedules = config.combineSchedules === 'true'
+      config.batteryCost = parseFloat(config.batteryCost)
       RED.nodes.createNode(this, config)
 
       const {
@@ -29,6 +30,7 @@ const node = (RED) => {
         averageConsumption,
         excessPvEnergyUse, // 0=Feed to grid, 1=Charge
         combineSchedules,
+        batteryCost
       } = config
 
       this.on('input', async (msg, send, done) => {
@@ -49,11 +51,10 @@ const node = (RED) => {
           batteryMaxOutputPower: batteryMaxOutputPower ?? batteryMaxInputPower, // for backwards compatible with older versions
           batteryMaxInputPower,
           averageConsumption,
-          consumptionForecast,
-          productionForecast,
           excessPvEnergyUse,
           soc: soc / 100,
           combineSchedules,
+          batteryCost
         })
 
         const payload = msg.payload ?? {}
@@ -64,12 +65,12 @@ const node = (RED) => {
           msg.payload.config = {
             combineSchedules,
             excessPvEnergyUse:
-              excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN',
+              excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN'
           }
           msg.payload.noBattery = {
             schedule: strategy.noBattery.schedule,
             excessPvEnergyUse: strategy.noBattery.excessPvEnergyUse,
-            cost: strategy.noBattery.cost,
+            cost: strategy.noBattery.cost
           }
         }
         msg.payload = payload

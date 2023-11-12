@@ -4,7 +4,7 @@ const {
   clamp,
   repair,
   calculateBatteryChargingStrategy,
-  crossoverFunction,
+  crossoverFunction
 } = require('../src/strategy-battery-charging-functions')
 
 describe('Util functions', () => {
@@ -27,24 +27,24 @@ describe('Crossover', () => {
       {
         periods: [
           { start: 0, activity: 1, duration: 10 },
-          { start: 30, activity: -1, duration: 10 },
+          { start: 30, activity: -1, duration: 10 }
         ],
-        excessPvEnergyUse: 0,
+        excessPvEnergyUse: 0
       },
       {
         periods: [
           { start: 60, activity: 1, duration: 10 },
-          { start: 80, activity: -1, duration: 10 },
+          { start: 80, activity: -1, duration: 10 }
         ],
-        excessPvEnergyUse: 0,
+        excessPvEnergyUse: 0
       }
     )[0]
     expect(p).toMatchObject({
       periods: [
         { start: 0, activity: 1, duration: 10 },
-        { start: 80, activity: -1, duration: 10 },
+        { start: 80, activity: -1, duration: 10 }
       ],
-      excessPvEnergyUse: 0,
+      excessPvEnergyUse: 0
     })
   })
 })
@@ -59,13 +59,13 @@ describe('Calculate', () => {
       {
         importPrice: 500,
         exportPrice: 0,
-        start: new Date(now + 60 * 60 * 1000).toString(),
+        start: new Date(now + 60 * 60 * 1000).toString()
       },
       {
         importPrice: 500,
         exportPrice: 0,
-        start: new Date(now + 60 * 60 * 1000 * 2).toString(),
-      },
+        start: new Date(now + 60 * 60 * 1000 * 2).toString()
+      }
     ]
     const productionForecast = priceData.map((v) => {
       return { start: v.start, value: 0 }
@@ -100,7 +100,7 @@ describe('Calculate', () => {
       productionForecast,
       consumptionForecast,
       soc,
-      excessPvEnergyUse,
+      excessPvEnergyUse
     }
     const strategy = calculateBatteryChargingStrategy(config)
     const bestSchedule = strategy.best.schedule
@@ -108,14 +108,14 @@ describe('Calculate', () => {
 
     expect(bestSchedule.length).toEqual(3)
     expect(bestSchedule[0]).toMatchObject({
-      activity: 0,
+      activity: 0
     })
     expect(bestSchedule[1]).toMatchObject({
       activity: -1,
-      name: 'discharging',
+      name: 'discharging'
     })
     expect(bestSchedule[2]).toMatchObject({
-      activity: 0,
+      activity: 0
     })
     expect(strategy.best.excessPvEnergyUse).toEqual(excessPvEnergyUse)
     expect(strategy.best.cost).not.toBeNull()
@@ -125,7 +125,7 @@ describe('Calculate', () => {
     console.log(`no battery: ${strategy.noBattery.cost}`)
 
     const values = bestSchedule
-      .filter((e) => e.activity != 0)
+      .filter((e) => e.activity !== 0)
       .reduce((total, e) => {
         const toTimeString = (date) => {
           const HH = date.getHours().toString().padStart(2, '0')
@@ -179,7 +179,7 @@ describe('Repair', () => {
   it('Repair - two valid genes', () => {
     const p = [
       { start: 5, duration: 10 },
-      { start: 20, duration: 10 },
+      { start: 20, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual(p)
   })
@@ -187,44 +187,44 @@ describe('Repair', () => {
   it('Repair - two valid genes in wrong order', () => {
     const p = [
       { start: 20, duration: 10 },
-      { start: 5, duration: 10 },
+      { start: 5, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 10 },
-      { start: 20, duration: 10 },
+      { start: 20, duration: 10 }
     ])
   })
 
   it('Repair - two genes next to each other', () => {
     const p = [
       { start: 5, duration: 10 },
-      { start: 15, duration: 10 },
+      { start: 15, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 10 },
-      { start: 15, duration: 10 },
+      { start: 15, duration: 10 }
     ])
   })
 
   it('Repair - two genes just crossing', () => {
     const p = [
       { start: 5, duration: 10 },
-      { start: 14, duration: 10 },
+      { start: 14, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 9 },
-      { start: 14, duration: 10 },
+      { start: 14, duration: 10 }
     ])
   })
 
   it('Repair - two genes crossing', () => {
     const p = [
       { start: 5, duration: 10 },
-      { start: 10, duration: 10 },
+      { start: 10, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 7 },
-      { start: 12, duration: 8 },
+      { start: 12, duration: 8 }
     ])
   })
 
@@ -232,23 +232,23 @@ describe('Repair', () => {
     const p = [
       { start: 5, duration: 10 },
       { start: 10, duration: 10 },
-      { start: 16, duration: 10 },
+      { start: 16, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 7 },
       { start: 12, duration: 6 },
-      { start: 18, duration: 8 },
+      { start: 18, duration: 8 }
     ])
   })
 
   it('Repair - two genes completely overlapping', () => {
     const p = [
       { start: 5, duration: 10 },
-      { start: 5, duration: 10 },
+      { start: 5, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 5 },
-      { start: 10, duration: 5 },
+      { start: 10, duration: 5 }
     ])
   })
 
@@ -256,45 +256,45 @@ describe('Repair', () => {
     const p = [
       { start: 5, duration: 10 },
       { start: 5, duration: 10 },
-      { start: 5, duration: 10 },
+      { start: 5, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 5, duration: 5 },
       { start: 10, duration: 0 },
-      { start: 10, duration: 5 },
+      { start: 10, duration: 5 }
     ])
   })
 
   it('Repair - start lower than 0', () => {
     const p = [
       { start: -5, duration: 10 },
-      { start: 20, duration: 10 },
+      { start: 20, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 0, duration: 10 },
-      { start: 20, duration: 10 },
+      { start: 20, duration: 10 }
     ])
   })
 
   it('Repair - duration higher than max', () => {
     const p = [
       { start: 0, duration: 10 },
-      { start: 45, duration: 10 },
+      { start: 45, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 0, duration: 10 },
-      { start: 45, duration: 5 },
+      { start: 45, duration: 5 }
     ])
   })
 
   it('Repair - start higher than max', () => {
     const p = [
       { start: 0, duration: 10 },
-      { start: 55, duration: 10 },
+      { start: 55, duration: 10 }
     ]
     expect(repair(p, 50)).toEqual([
       { start: 0, duration: 10 },
-      { start: 49, duration: 1 },
+      { start: 49, duration: 1 }
     ])
   })
 })

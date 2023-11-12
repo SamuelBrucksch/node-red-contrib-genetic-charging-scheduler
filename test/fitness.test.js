@@ -6,7 +6,7 @@ const {
   calculatePeriodScore,
   calculateDischargeScore,
   calculateChargeScore,
-  calculateNormalScore,
+  calculateNormalScore
 } = require('../src/fitness')
 
 let props
@@ -21,36 +21,36 @@ beforeEach(() => {
       importPrice: 1,
       exportPrice: 1,
       consumption: 1,
-      production: 0,
+      production: 0
     },
     {
       start: new Date(now + 60 * 60 * 1000).toString(),
       importPrice: 1,
       exportPrice: 1,
       consumption: 1,
-      production: 0,
+      production: 0
     },
     {
       start: new Date(now + 60 * 60 * 1000 * 2).toString(),
       importPrice: 1,
       exportPrice: 1,
       consumption: 1,
-      production: 0,
+      production: 0
     },
     {
       start: new Date(now + 60 * 60 * 1000 * 3).toString(),
       importPrice: 1,
       exportPrice: 1,
       consumption: 1,
-      production: 0,
+      production: 0
     },
     {
       start: new Date(now + 60 * 60 * 1000 * 4).toString(),
       importPrice: 1,
       exportPrice: 1,
       consumption: 1,
-      production: 0,
-    },
+      production: 0
+    }
   ]
   props = {
     input,
@@ -59,13 +59,14 @@ beforeEach(() => {
     batteryMaxInputPower: 1,
     batteryMaxOutputPower: 2,
     soc: 1,
+    batteryCost: 0
   }
   dischargeProps = {
     ...props,
     input: props.input.map((i) => ({
       ...i,
-      consumption: i.consumption * props.batteryMaxOutputPower,
-    })),
+      consumption: i.consumption * props.batteryMaxOutputPower
+    }))
   }
 })
 
@@ -80,7 +81,7 @@ describe('Fitness - splitIntoHourIntervals', () => {
       splitIntoHourIntervals({ start: 0, activity: 1, duration: 90 })
     ).toMatchObject([
       { start: 0, activity: 1, duration: 60 },
-      { start: 60, activity: 1, duration: 30 },
+      { start: 60, activity: 1, duration: 30 }
     ])
   })
   test('should split into hour two 30min intervals', () => {
@@ -88,7 +89,7 @@ describe('Fitness - splitIntoHourIntervals', () => {
       splitIntoHourIntervals({ start: 30, activity: 1, duration: 60 })
     ).toMatchObject([
       { start: 30, activity: 1, duration: 30 },
-      { start: 60, activity: 1, duration: 30 },
+      { start: 60, activity: 1, duration: 30 }
     ])
   })
   test('should split into 3 intervals', () => {
@@ -97,7 +98,7 @@ describe('Fitness - splitIntoHourIntervals', () => {
     ).toMatchObject([
       { start: 30, activity: 1, duration: 30 },
       { start: 60, activity: 1, duration: 60 },
-      { start: 120, activity: 1, duration: 30 },
+      { start: 120, activity: 1, duration: 30 }
     ])
   })
 })
@@ -113,7 +114,7 @@ describe('Fitness - allPeriods', () => {
     expect(
       allPeriods(props, {
         excessPvEnergyUse: 0,
-        periods: [{ start: 0, duration: 300, activity: 1 }],
+        periods: [{ start: 0, duration: 300, activity: 1 }]
       })
     ).toMatchObject([{ start: 0, duration: 300, activity: 1 }])
   })
@@ -122,12 +123,12 @@ describe('Fitness - allPeriods', () => {
     expect(
       allPeriods(props, {
         excessPvEnergyUse: 0,
-        periods: [{ start: 120, duration: 60, activity: 1 }],
+        periods: [{ start: 120, duration: 60, activity: 1 }]
       })
     ).toMatchObject([
       { start: 0, duration: 120, activity: 0 },
       { start: 120, duration: 60, activity: 1 },
-      { start: 180, duration: 120, activity: 0 },
+      { start: 180, duration: 120, activity: 0 }
     ])
   })
 
@@ -135,12 +136,12 @@ describe('Fitness - allPeriods', () => {
     expect(
       allPeriods(props, {
         excessPvEnergyUse: 0,
-        periods: [{ start: 100, duration: 100, activity: 1 }],
+        periods: [{ start: 100, duration: 100, activity: 1 }]
       })
     ).toMatchObject([
       { start: 0, duration: 100, activity: 0 },
       { start: 100, duration: 100, activity: 1 },
-      { start: 200, duration: 100, activity: 0 },
+      { start: 200, duration: 100, activity: 0 }
     ])
   })
 
@@ -150,15 +151,15 @@ describe('Fitness - allPeriods', () => {
         excessPvEnergyUse: 0,
         periods: [
           { start: 70, activity: 1, duration: 80 },
-          { start: 160, activity: -1, duration: 30 },
-        ],
+          { start: 160, activity: -1, duration: 30 }
+        ]
       })
     ).toMatchObject([
       { start: 0, duration: 70, activity: 0 },
       { start: 70, duration: 80, activity: 1 },
       { start: 150, duration: 10, activity: 0 },
       { start: 160, duration: 30, activity: -1 },
-      { start: 190, duration: 110, activity: 0 },
+      { start: 190, duration: 110, activity: 0 }
     ])
   })
 })
@@ -172,7 +173,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 1,
+          maxDischarge: 1
         })
       ).toEqual([0, -1])
     })
@@ -184,7 +185,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 0,
+          maxDischarge: 0
         })
       ).toEqual([2, 0])
     })
@@ -196,7 +197,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 0.5,
+          maxDischarge: 0.5
         })
       ).toEqual([1, -0.5])
     })
@@ -208,7 +209,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 1,
-          maxDischarge: 1,
+          maxDischarge: 1
         })
       ).toEqual([0, 0])
     })
@@ -220,7 +221,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 2,
-          maxDischarge: 1,
+          maxDischarge: 1
         })
       ).toEqual([-2, 0])
     })
@@ -234,7 +235,7 @@ describe('Fitness - calculateScore', () => {
           production: 2,
           maxDischarge: 1,
           maxCharge: 1,
-          excessPvEnergyUse: 1,
+          excessPvEnergyUse: 1
         })
       ).toEqual([0, 1])
     })
@@ -249,6 +250,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0,
+          batteryCost: 0
         })
       ).toEqual([2, 0])
     })
@@ -262,6 +264,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 1,
+          batteryCost: 0
         })
       ).toEqual([4, 1])
     })
@@ -274,6 +277,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0.5,
+          batteryCost: 0
         })
       ).toEqual([3, 0.5])
     })
@@ -287,6 +291,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 1,
           maxCharge: 1,
+          batteryCost: 0
         })
       ).toEqual([2, 1])
     })
@@ -300,6 +305,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
+          batteryCost: 0
         })
       ).toEqual([0, 1])
     })
@@ -314,6 +320,7 @@ describe('Fitness - calculateScore', () => {
           production: 3,
           maxCharge: 1,
           excessPvEnergyUse: 1,
+          batteryCost: 0
         })
       ).toEqual([-2, 1])
     })
@@ -327,7 +334,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxCharge: 1,
+          maxCharge: 1
         })
       ).toEqual([2, 0])
     })
@@ -339,7 +346,7 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 1,
-          maxCharge: 1,
+          maxCharge: 1
         })
       ).toEqual([0, 0])
     })
@@ -352,7 +359,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          excessPvEnergyUse: 1,
+          excessPvEnergyUse: 1
         })
       ).toEqual([0, 1])
     })
@@ -365,7 +372,7 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          excessPvEnergyUse: 0,
+          excessPvEnergyUse: 0
         })
       ).toEqual([-2, 0])
     })
@@ -415,9 +422,9 @@ describe('Fitness', () => {
     const score = fitnessFunction(props)({
       periods: [
         { start: 30, duration: 60, activity: 1 },
-        { start: 90, duration: 30, activity: -1 },
+        { start: 90, duration: 30, activity: -1 }
       ],
-      excessPvEnergyUse: 0,
+      excessPvEnergyUse: 0
     })
     expect(score).toEqual(-3.5)
   })
@@ -428,9 +435,9 @@ describe('Fitness', () => {
     const score = fitnessFunction(props)({
       periods: [
         { start: 30, duration: 60, activity: 1 },
-        { start: 90, duration: 30, activity: -1 },
+        { start: 90, duration: 30, activity: -1 }
       ],
-      excessPvEnergyUse: 0,
+      excessPvEnergyUse: 0
     })
     expect(score).toEqual(-1.5)
   })
@@ -446,26 +453,26 @@ describe('Fitness', () => {
         importPrice: 1,
         exportPrice: 1,
         consumption: 1.5,
-        production: 0,
+        production: 0
       },
       {
         start: new Date(now + 60 * 60 * 1000).toString(),
         importPrice: 500,
         exportPrice: 500,
         consumption: 1.5,
-        production: 0,
+        production: 0
       },
       {
         start: new Date(now + 60 * 60 * 1000 * 2).toString(),
         importPrice: 500,
         exportPrice: 500,
         consumption: 1.5,
-        production: 0,
-      },
+        production: 0
+      }
     ]
-    let score = fitnessFunction(props)({
+    const score = fitnessFunction(props)({
       periods: [{ start: 0, duration: 180, activity: 1 }],
-      excessPvEnergyUse: 0,
+      excessPvEnergyUse: 0
     })
     expect(score).toEqual(-1501.5)
   })

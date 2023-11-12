@@ -53,6 +53,11 @@
         value: true,
         required: true,
       },
+      batteryCost: {
+        value: 0.05,
+        required: true,
+        validate: RED.validators.number(),
+      },
     },
     oneditprepare: () => {
       $('#node-input-combineSchedules').typedInput({
@@ -97,6 +102,7 @@
       })
       $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
+      $('#node-input-batteryCost').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
@@ -164,6 +170,12 @@
       >Excessive PV Energy</label
     >
     <input type="text" style="width: 160px" id="node-input-excessPvEnergyUse" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-batteryCost" style="width: 230px"
+      >Battery cost per kWh</label
+    >
+    <input type="text" style="width: 160px" id="node-input-batteryCost" />
   </div>
 
   <h3>Genetic algorithm</h3>

@@ -63,7 +63,7 @@ const mutationFunction = (props) => (phenotype) => {
   }
   return {
     periods: repair(phenotype.periods, totalDuration),
-    excessPvEnergyUse: phenotype.excessPvEnergyUse,
+    excessPvEnergyUse: phenotype.excessPvEnergyUse
   }
 }
 
@@ -85,8 +85,8 @@ const crossoverFunction = (props) => (phenotypeA, phenotypeB) => {
       excessPvEnergyUse:
         Math.random() < 0.5
           ? phenotypeA.excessPvEnergyUse
-          : phenotypeB.excessPvEnergyUse,
-    },
+          : phenotypeB.excessPvEnergyUse
+    }
   ]
 }
 
@@ -95,7 +95,7 @@ const generatePopulation = (props) => {
     totalDuration,
     populationSize,
     numberOfPricePeriods,
-    excessPvEnergyUse,
+    excessPvEnergyUse
   } = props
   const sortedIndex = (array, value) => {
     let low = 0
@@ -132,7 +132,7 @@ const generatePopulation = (props) => {
 
     population.push({
       periods: timePeriods,
-      excessPvEnergyUse,
+      excessPvEnergyUse
     })
   }
   return population
@@ -157,7 +157,7 @@ const toSchedule = (props, phenotype) => {
   const { input, combineSchedules } = props
 
   const schedule = []
-  //props, totalDuration, excessPvEnergyUse, p
+  // props, totalDuration, excessPvEnergyUse, p
   const periodStart = new Date(input[0].start)
   for (const period of allPeriodsGenerator(props, phenotype)) {
     if (period.duration <= 0) {
@@ -166,7 +166,7 @@ const toSchedule = (props, phenotype) => {
 
     if (
       schedule.length &&
-      period.activity == schedule.at(-1).activity &&
+      period.activity === schedule.at(-1).activity &&
       combineSchedules
     ) {
       schedule.at(-1).duration += period.duration
@@ -182,7 +182,7 @@ const toSchedule = (props, phenotype) => {
         cost: period.cost,
         charge: period.charge,
         socStart: Math.round(period.socStart * 1000) / 10,
-        socEnd: Math.round(period.socEnd * 1000) / 10,
+        socEnd: Math.round(period.socEnd * 1000) / 10
       })
     }
   }
@@ -196,7 +196,7 @@ const mergeInput = (config) => {
     averageProduction,
     priceData,
     consumptionForecast,
-    productionForecast,
+    productionForecast
   } = config
 
   let now = Date.now()
@@ -219,7 +219,7 @@ const mergeInput = (config) => {
             (p) => new Date(p.start).getTime() === new Date(v.start).getTime()
           )?.value ??
           averageProduction ??
-          0,
+          0
       }
     })
 }
@@ -233,14 +233,14 @@ const calculateBatteryChargingStrategy = (config) => {
   const props = {
     ...config,
     input,
-    totalDuration: input.length * 60,
+    totalDuration: input.length * 60
   }
 
   const options = {
     mutationFunction: mutationFunction(props),
     crossoverFunction: crossoverFunction(props),
     fitnessFunction: fitnessFunction(props),
-    population: generatePopulation(props),
+    population: generatePopulation(props)
   }
 
   const geneticAlgorithm = geneticAlgorithmConstructor(options)
@@ -255,13 +255,13 @@ const calculateBatteryChargingStrategy = (config) => {
     best: {
       schedule: toSchedule(props, best),
       excessPvEnergyUse: best.excessPvEnergyUse,
-      cost: options.fitnessFunction(best) * -1,
+      cost: options.fitnessFunction(best) * -1
     },
     noBattery: {
       schedule: toSchedule(props, noBattery),
       excessPvEnergyUse: noBattery.excessPvEnergyUse,
-      cost: options.fitnessFunction(noBattery) * -1,
-    },
+      cost: options.fitnessFunction(noBattery) * -1
+    }
   }
 }
 
@@ -271,5 +271,5 @@ module.exports = {
   crossoverFunction,
   mutationFunction,
   fitnessFunction,
-  calculateBatteryChargingStrategy,
+  calculateBatteryChargingStrategy
 }
