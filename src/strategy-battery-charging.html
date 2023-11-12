@@ -47,7 +47,6 @@
       excessPvEnergyUse: {
         value: 0,
         required: true,
-        validate: RED.validators.number(),
       },
       combineSchedules: {
         value: true,
@@ -109,70 +108,58 @@
 
 <script type="text/html" data-template-name="strategy-genetic-charging">
   <div class="form-row">
-    <label for="node-input-name" style="width: 240px"
-      ><i class="fa fa-tag"></i> Name</label
-    >
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name" />
   </div>
   <h3>Energy settings</h3>
   <div class="form-row">
-    <label for="node-input-batteryMaxEnergy" style="width: 240px"
-      >Battery capacity (kWh)</label
-    >
+    <label for="node-input-batteryMaxEnergy">Battery capacity (kWh)</label>
     <input type="text" id="node-input-batteryMaxEnergy" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-batteryMaxInputPower" style="width: 240px"
+    <label for="node-input-batteryMaxInputPower"
       >Max battery input power (kW)</label
     >
     <input type="text" id="node-input-batteryMaxInputPower" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-batteryMaxOutputPower" style="width: 240px"
+    <label for="node-input-batteryMaxOutputPower"
       >Max battery output power (kW)</label
     >
     <input type="text" id="node-input-batteryMaxOutputPower" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-averageConsumption" style="width: 240px"
+    <label for="node-input-averageConsumption"
       >Average consumption per hour (kW)</label
     >
     <input type="text" id="node-input-averageConsumption" />
   </div>
   <div class="form-row">
-    <label for="node-input-excessPvEnergyUse" style="width: 240px"
-      >Excessive PV Energy</label
-    >
+    <label for="node-input-excessPvEnergyUse">Excessive PV Energy</label>
     <input type="text" id="node-input-excessPvEnergyUse" />
   </div>
 
   <h3>Genetic algorithm</h3>
   <div class="form-row">
-    <label for="node-input-populationSize" style="width: 240px"
-      >Population size</label
-    >
+    <label for="node-input-populationSize">Population size</label>
     <input type="text" id="node-input-populationSize" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-generations" style="width: 240px"
-      >Number of generations</label
-    >
+    <label for="node-input-generations">Number of generations</label>
     <input type="text" id="node-input-generations" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-mutationRate" style="width: 240px"
-      >Mutation chance (%)</label
-    >
+    <label for="node-input-mutationRate">Mutation chance (%)</label>
     <input type="text" id="node-input-mutationRate" />
   </div>
 
   <div class="form-row">
-    <label for="node-input-numberOfPricePeriods" style="width: 240px"
+    <label for="node-input-numberOfPricePeriods"
       >Number of charging/discharging periods</label
     >
     <input type="text" id="node-input-numberOfPricePeriods" />
@@ -180,9 +167,7 @@
 
   <h3>Config</h3>
   <div class="form-row">
-    <label for="node-input-combineSchedules" style="width: 240px"
-      >Combine schedules</label
-    >
+    <label for="node-input-combineSchedules">Combine schedules</label>
     <input type="text" id="node-input-combineSchedules" />
   </div>
 </script>
