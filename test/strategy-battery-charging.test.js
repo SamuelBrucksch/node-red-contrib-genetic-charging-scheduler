@@ -250,9 +250,8 @@ describe('Battery charging strategy Node', () => {
         batteryMaxOutputPower: 3.5,
         averageConsumption: 1,
         wires: [['n2']],
-        excessPvEnergyUse: "1",
-        combineSchedules: "true",
-
+        excessPvEnergyUse: '1',
+        combineSchedules: 'true',
       },
       { id: 'n2', type: 'helper' },
     ]
