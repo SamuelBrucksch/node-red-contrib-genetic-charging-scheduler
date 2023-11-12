@@ -6,7 +6,16 @@ const node = (RED) => {
   RED.nodes.registerType(
     'strategy-genetic-charging',
     function callback(config) {
+      config.populationSize = parseInt(config.populationSize)
+      config.numberOfPricePeriods = parseInt(config.numberOfPricePeriods)
+      config.generations = parseInt(config.generations)
+      config.mutationRate = parseInt(config.mutationRate)
+      config.batteryMaxEnergy = parseFloat(config.batteryMaxEnergy)
+      config.batteryMaxInputPower = parseFloat(config.batteryMaxInputPower)
+      config.batteryMaxOutputPower = parseFloat(config.batteryMaxOutputPower)
+      config.averageConsumption = parseFloat(config.averageConsumption)
       config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
+      config.combineSchedules = config.combineSchedules === 'true'
       RED.nodes.createNode(this, config)
 
       const {

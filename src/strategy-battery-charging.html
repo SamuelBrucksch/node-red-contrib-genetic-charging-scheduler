@@ -55,19 +55,48 @@
       },
     },
     oneditprepare: () => {
-      $("#node-input-combineSchedules").typedInput({type:"bool", types: ['bool']})
-      $("#node-input-excessPvEnergyUse").typedInput({type:"excessPvEnergyUse", types: [{
-        value: 'excessPvEnergyUse',
-        options: [{value: '0', label: 'Grid feed-in'}, {value: '1', label: 'Charge battery'}]
-      }]})
-      $("#node-input-averageConsumption").typedInput({type:"num", types: ['num']})
-      $("#node-input-batteryMaxOutputPower").typedInput({type:"num", types: ['num']})
-      $("#node-input-batteryMaxInputPower").typedInput({type:"num", types: ['num']})
-      $("#node-input-batteryMaxEnergy").typedInput({type:"num", types: ['num']})
-      $("#node-input-numberOfPricePeriods").typedInput({type:"num", types: ['num']})
-      $("#node-input-populationSize").typedInput({type:"num", types: ['num']})
-      $("#node-input-generations").typedInput({type:"num", types: ['num']})
-      $("#node-input-mutationRate").typedInput({type:"num", types: ['num']})
+      $('#node-input-combineSchedules').typedInput({
+        type: 'bool',
+        types: ['bool'],
+      })
+      $('#node-input-excessPvEnergyUse').typedInput({
+        type: 'excessPvEnergyUse',
+        types: [
+          {
+            value: 'excessPvEnergyUse',
+            options: [
+              { value: '0', label: 'Grid feed-in' },
+              { value: '1', label: 'Charge battery' },
+            ],
+          },
+        ],
+      })
+      $('#node-input-averageConsumption').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxOutputPower').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxInputPower').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-batteryMaxEnergy').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-numberOfPricePeriods').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-populationSize').typedInput({
+        type: 'num',
+        types: ['num'],
+      })
+      $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
+      $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
@@ -83,7 +112,12 @@
     <label for="node-input-name" style="width: 230px"
       ><i class="fa fa-tag"></i> Name</label
     >
-    <input type="text" style="width: 160px" style="width: 160px" id="node-input-name" placeholder="Name" />
+    <input
+      type="text"
+      style="width: 160px"
+      id="node-input-name"
+      placeholder="Name"
+    />
   </div>
   <h3>Energy settings</h3>
   <div class="form-row">
@@ -97,21 +131,33 @@
     <label for="node-input-batteryMaxInputPower" style="width: 230px"
       >Max battery input power (kW)</label
     >
-    <input type="text" style="width: 160px" id="node-input-batteryMaxInputPower" />
+    <input
+      type="text"
+      style="width: 160px"
+      id="node-input-batteryMaxInputPower"
+    />
   </div>
 
   <div class="form-row">
     <label for="node-input-batteryMaxOutputPower" style="width: 230px"
       >Max battery output power (kW)</label
     >
-    <input type="text" style="width: 160px" id="node-input-batteryMaxOutputPower" />
+    <input
+      type="text"
+      style="width: 160px"
+      id="node-input-batteryMaxOutputPower"
+    />
   </div>
 
   <div class="form-row">
     <label for="node-input-averageConsumption" style="width: 230px"
       >Average consumption per hour (kW)</label
     >
-    <input type="text" style="width: 160px" id="node-input-averageConsumption" />
+    <input
+      type="text"
+      style="width: 160px"
+      id="node-input-averageConsumption"
+    />
   </div>
   <div class="form-row">
     <label for="node-input-excessPvEnergyUse" style="width: 230px"
@@ -146,7 +192,11 @@
     <label for="node-input-numberOfPricePeriods" style="width: 230px"
       >Charging/discharging periods</label
     >
-    <input type="text" style="width: 160px" id="node-input-numberOfPricePeriods" />
+    <input
+      type="text"
+      style="width: 160px"
+      id="node-input-numberOfPricePeriods"
+    />
   </div>
 
   <h3>Config</h3>
