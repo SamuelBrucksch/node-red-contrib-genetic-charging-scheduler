@@ -60,8 +60,8 @@ const node = (RED) => {
 
         if (strategy && Object.keys(strategy).length > 0) {
           msg.payload.schedule = strategy.best.schedule
-          msg.payload.excessPvEnergyUse = strategy.best.excessPvEnergyUse
           msg.payload.cost = strategy.best.cost
+          msg.payload.config = { combineSchedules, excessPvEnergyUse }
           msg.payload.noBattery = {
             schedule: strategy.noBattery.schedule,
             excessPvEnergyUse: strategy.noBattery.excessPvEnergyUse,
