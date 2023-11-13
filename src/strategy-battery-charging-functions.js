@@ -154,7 +154,7 @@ const activityToName = (activity) => {
 }
 
 const toSchedule = (props, phenotype) => {
-  const { input, combineSchedules } = props
+  const { input } = props
 
   const schedule = []
   // props, totalDuration, excessPvEnergyUse, p
@@ -166,8 +166,7 @@ const toSchedule = (props, phenotype) => {
 
     if (
       schedule.length &&
-      period.activity === schedule.at(-1).activity &&
-      combineSchedules
+      period.activity === schedule.at(-1).activity
     ) {
       schedule.at(-1).duration += period.duration
       schedule.at(-1).cost += period.cost
