@@ -262,6 +262,12 @@ describe('Battery charging strategy Node', () => {
         expect(msg).toHaveProperty('payload')
         expect(msg.payload).toHaveProperty('schedule')
         expect(msg.payload.cost).not.toBe(NaN)
+        for (const s of msg.payload.schedule) {
+          expect(s.socStart).toBeGreaterThanOrEqual(0)
+          expect(s.socStart).toBeLessThanOrEqual(100)
+          expect(s.socEnd).toBeGreaterThanOrEqual(0)
+          expect(s.socEnd).toBeLessThanOrEqual(100)
+        }
 
         // is converted to int on input
         expect(msg.payload.excessPvEnergyUse).toEqual('CHARGE_BATTERY')
