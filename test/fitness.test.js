@@ -59,7 +59,8 @@ beforeEach(() => {
     batteryMaxInputPower: 1,
     batteryMaxOutputPower: 2,
     soc: 1,
-    batteryCost: 0
+    batteryCost: 0,
+    efficiency: 1
   }
   dischargeProps = {
     ...props,
@@ -173,7 +174,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 1
+          maxDischarge: 1,
+          efficiency: 1
         })
       ).toEqual([0, -1])
     })
@@ -185,7 +187,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 0
+          maxDischarge: 0,
+          efficiency: 1
         })
       ).toEqual([2, 0])
     })
@@ -197,7 +200,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxDischarge: 0.5
+          maxDischarge: 0.5,
+          efficiency: 1
         })
       ).toEqual([1, -0.5])
     })
@@ -209,7 +213,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 1,
-          maxDischarge: 1
+          maxDischarge: 1,
+          efficiency: 1
         })
       ).toEqual([0, 0])
     })
@@ -221,7 +226,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 2,
-          maxDischarge: 1
+          maxDischarge: 1,
+          efficiency: 1
         })
       ).toEqual([-2, 0])
     })
@@ -235,7 +241,8 @@ describe('Fitness - calculateScore', () => {
           production: 2,
           maxDischarge: 1,
           maxCharge: 1,
-          excessPvEnergyUse: 1
+          excessPvEnergyUse: 1,
+          efficiency: 1
         })
       ).toEqual([0, 1])
     })
@@ -247,11 +254,82 @@ describe('Fitness - calculateScore', () => {
         consumption: 1,
         production: 0,
         maxDischarge: 0.5,
-        batteryCost: 1
+        batteryCost: 1,
+        efficiency: 1
       }
       expect(
         calculateDischargeScore(props)
       ).toEqual([1, -0.5])
+    })
+
+    test('efficiency affects discharged energy, grid only', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 0,
+        maxDischarge: 1,
+        batteryCost: 0,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateDischargeScore(props)
+      ).toEqual([0, -1.05])
+    })
+
+    test('efficiency affects discharged energy, grid + PV consumption', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 3,
+        production: 2,
+        maxDischarge: 1,
+        maxCharge: 1,
+        batteryCost: 0,
+        excessPvEnergyUse: 1,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateDischargeScore(props)
+      ).toEqual([0, -1.05])
+    })
+
+    test('efficiency affects discharged energy, charge from PV', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 3,
+        production: 6,
+        maxDischarge: 1,
+        maxCharge: 2,
+        batteryCost: 0,
+        excessPvEnergyUse: 1,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateDischargeScore(props)
+      ).toEqual([-2, 1.9])
+    })
+
+    test('efficiency affects discharged energy, charge from grid', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 3,
+        production: 0,
+        maxDischarge: 1,
+        maxCharge: 2,
+        batteryCost: 0,
+        excessPvEnergyUse: 1,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateDischargeScore(props)
+      ).toEqual([4, -1.05])
     })
   })
 
@@ -264,7 +342,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([2, 0])
     })
@@ -278,7 +357,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 1,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([4, 1])
     })
@@ -291,7 +371,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0.5,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([3, 0.5])
     })
@@ -305,7 +386,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 1,
           maxCharge: 1,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([2, 1])
     })
@@ -319,7 +401,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([0, 1])
     })
@@ -334,9 +417,73 @@ describe('Fitness - calculateScore', () => {
           production: 3,
           maxCharge: 1,
           excessPvEnergyUse: 1,
-          batteryCost: 0
+          batteryCost: 0,
+          efficiency: 1
         })
       ).toEqual([-2, 1])
+    })
+
+    test('battery cost affects charge price', () => {
+      const props = {
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 0,
+        maxCharge: 0,
+        batteryCost: 1,
+        efficiency: 1
+      }
+      expect(
+        calculateChargeScore(props)
+      ).toEqual([(props.batteryCost + props.importPrice) * props.consumption, 0])
+    })
+
+    test('efficiency affects charged energy from PV', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 2,
+        maxCharge: 1,
+        batteryCost: 0,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateChargeScore(props)
+      ).toEqual([0, 0.95])
+    })
+
+    test('efficiency affects charged energy from grid', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 0,
+        maxCharge: 1,
+        batteryCost: 0,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateChargeScore(props)
+      ).toEqual([4, 0.95])
+    })
+
+    test('efficiency affects charged energy from mix of PV + grid', () => {
+      const props = {
+        duration: 1,
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 1,
+        maxCharge: 1,
+        batteryCost: 0,
+        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
+      }
+      expect(
+        calculateChargeScore(props)
+      ).toEqual([2, 0.95])
     })
   })
 
@@ -348,7 +495,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 0,
-          maxCharge: 1
+          maxCharge: 1,
+          efficiency: 1
         })
       ).toEqual([2, 0])
     })
@@ -360,7 +508,8 @@ describe('Fitness - calculateScore', () => {
           exportPrice: 2,
           consumption: 1,
           production: 1,
-          maxCharge: 1
+          maxCharge: 1,
+          efficiency: 1
         })
       ).toEqual([0, 0])
     })
@@ -373,7 +522,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          excessPvEnergyUse: 1
+          excessPvEnergyUse: 1,
+          efficiency: 1
         })
       ).toEqual([0, 1])
     })
@@ -386,9 +536,24 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          excessPvEnergyUse: 0
+          excessPvEnergyUse: 0,
+          efficiency: 1
         })
       ).toEqual([-2, 0])
+    })
+
+    test('should consume normal with efficiency loss', () => {
+      expect(
+        calculateNormalScore({
+          importPrice: 2,
+          exportPrice: 2,
+          consumption: 1,
+          production: 2,
+          maxCharge: 1,
+          excessPvEnergyUse: 1,
+          efficiency: 0.9
+        })
+      ).toEqual([0, 0.95])
     })
   })
 
@@ -489,19 +654,5 @@ describe('Fitness', () => {
       excessPvEnergyUse: 0
     })
     expect(score).toEqual(-1501.5)
-  })
-
-  test('battery cost affects charge price', () => {
-    const props = {
-      importPrice: 2,
-      exportPrice: 2,
-      consumption: 1,
-      production: 0,
-      maxCharge: 0,
-      batteryCost: 1
-    }
-    expect(
-      calculateChargeScore(props)
-    ).toEqual([(props.batteryCost + props.importPrice) * props.consumption, 0])
   })
 })

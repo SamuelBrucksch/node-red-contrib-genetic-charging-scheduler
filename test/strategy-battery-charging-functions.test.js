@@ -85,6 +85,7 @@ describe('Calculate', () => {
     const averageProduction = 0 // kW
     const soc = 0
     const excessPvEnergyUse = 0
+    const efficiency = 1
 
     const config = {
       priceData,
@@ -100,7 +101,8 @@ describe('Calculate', () => {
       productionForecast,
       consumptionForecast,
       soc,
-      excessPvEnergyUse
+      excessPvEnergyUse,
+      efficiency
     }
     const strategy = calculateBatteryChargingStrategy(config)
     const bestSchedule = strategy.best.schedule

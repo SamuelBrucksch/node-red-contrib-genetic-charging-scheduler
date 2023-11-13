@@ -250,7 +250,8 @@ describe('Battery charging strategy Node', () => {
         averageConsumption: 1,
         wires: [['n2']],
         excessPvEnergyUse: '1',
-        batteryCost: 0.05
+        batteryCost: 0.05,
+        efficiency: 0.9
       },
       { id: 'n2', type: 'helper' }
     ]
@@ -260,6 +261,7 @@ describe('Battery charging strategy Node', () => {
       n2.on('input', function inputCallback (msg) {
         expect(msg).toHaveProperty('payload')
         expect(msg.payload).toHaveProperty('schedule')
+        expect(msg.payload.cost).not.toBe(NaN)
 
         // is converted to int on input
         expect(msg.payload.excessPvEnergyUse).toEqual('CHARGE_BATTERY')
