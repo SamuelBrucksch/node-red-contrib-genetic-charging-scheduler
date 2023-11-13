@@ -5,12 +5,12 @@
     defaults: {
       name: { value: '' },
       populationSize: {
-        value: 20,
+        value: 50,
         required: true,
         validate: RED.validators.number(),
       },
       generations: {
-        value: 400,
+        value: 100,
         required: true,
         validate: RED.validators.number(),
       },
@@ -35,7 +35,7 @@
         validate: RED.validators.number(),
       },
       batteryMaxOutputPower: {
-        value: 2.5,
+        value: 3.5,
         required: true,
         validate: RED.validators.number(),
       },
@@ -49,21 +49,18 @@
         required: true,
         validate: RED.validators.number(),
       },
-      combineSchedules: {
-        value: true,
-        required: true,
-      },
       batteryCost: {
         value: 0.05,
         required: true,
         validate: RED.validators.number(),
       },
+      efficiency: {
+        value: 90,
+        required: true,
+        validate: RED.validators.number(),
+      },
     },
     oneditprepare: () => {
-      $('#node-input-combineSchedules').typedInput({
-        type: 'bool',
-        types: ['bool'],
-      })
       $('#node-input-excessPvEnergyUse').typedInput({
         type: 'excessPvEnergyUse',
         types: [
@@ -103,6 +100,7 @@
       $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-batteryCost').typedInput({ type: 'num', types: ['num'] })
+      $('#node-input-efficiency').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
@@ -177,6 +175,12 @@
     >
     <input type="text" style="width: 160px" id="node-input-batteryCost" />
   </div>
+  <div class="form-row">
+    <label for="node-input-efficiency" style="width: 230px"
+      >System efficiency</label
+    >
+    <input type="text" style="width: 160px" id="node-input-efficiency" />
+  </div>
 
   <h3>Genetic algorithm</h3>
   <div class="form-row">
@@ -209,14 +213,6 @@
       style="width: 160px"
       id="node-input-numberOfPricePeriods"
     />
-  </div>
-
-  <h3>Config</h3>
-  <div class="form-row">
-    <label for="node-input-combineSchedules" style="width: 230px"
-      >Combine schedules</label
-    >
-    <input type="text" style="width: 160px" id="node-input-combineSchedules" />
   </div>
 </script>
 

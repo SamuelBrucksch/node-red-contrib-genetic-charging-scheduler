@@ -97,8 +97,7 @@ describe('Battery charging strategy Node', () => {
         expect(msg).toHaveProperty('payload')
         expect(msg.payload).toHaveProperty('schedule')
 
-        expect(msg.payload.config.excessPvEnergyUse).toEqual('GRID_FEED_IN')
-        expect(msg.payload.config.combineSchedules).toBe(false)
+        expect(msg.payload.excessPvEnergyUse).toEqual('GRID_FEED_IN')
 
         console.log(JSON.stringify(msg.payload, null, 1))
         done()
@@ -251,7 +250,6 @@ describe('Battery charging strategy Node', () => {
         averageConsumption: 1,
         wires: [['n2']],
         excessPvEnergyUse: '1',
-        combineSchedules: 'true',
         batteryCost: 0.05
       },
       { id: 'n2', type: 'helper' }
@@ -264,8 +262,7 @@ describe('Battery charging strategy Node', () => {
         expect(msg.payload).toHaveProperty('schedule')
 
         // is converted to int on input
-        expect(msg.payload.config.excessPvEnergyUse).toEqual('CHARGE_BATTERY')
-        expect(msg.payload.config.combineSchedules).toBe(true)
+        expect(msg.payload.excessPvEnergyUse).toEqual('CHARGE_BATTERY')
 
         console.log(JSON.stringify(msg.payload, null, 1))
         done()

@@ -15,8 +15,8 @@ const node = (RED) => {
       config.batteryMaxOutputPower = parseFloat(config.batteryMaxOutputPower)
       config.averageConsumption = parseFloat(config.averageConsumption)
       config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
-      config.combineSchedules = config.combineSchedules === 'true'
       config.batteryCost = parseFloat(config.batteryCost)
+      config.efficiency = parseInt(config.efficiency)
       RED.nodes.createNode(this, config)
 
       const {
@@ -29,8 +29,8 @@ const node = (RED) => {
         batteryMaxOutputPower,
         averageConsumption,
         excessPvEnergyUse, // 0=Feed to grid, 1=Charge
-        combineSchedules,
-        batteryCost
+        batteryCost,
+        efficiency
       } = config
 
       this.on('input', async (msg, send, done) => {
@@ -53,8 +53,8 @@ const node = (RED) => {
           averageConsumption,
           excessPvEnergyUse,
           soc: soc / 100,
-          combineSchedules,
-          batteryCost
+          batteryCost,
+          efficiency
         })
 
         const payload = msg.payload ?? {}
@@ -62,14 +62,10 @@ const node = (RED) => {
         if (strategy && Object.keys(strategy).length > 0) {
           msg.payload.schedule = strategy.best.schedule
           msg.payload.cost = strategy.best.cost
-          msg.payload.config = {
-            combineSchedules,
-            excessPvEnergyUse:
-              excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN'
-          }
+          msg.payload.excessPvEnergyUse = excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN'
           msg.payload.noBattery = {
             schedule: strategy.noBattery.schedule,
-            excessPvEnergyUse: strategy.noBattery.excessPvEnergyUse,
+            excessPvEnergyUse: strategy.noBattery.excessPvEnergyUse === 1 ? 'CHARGE_BATTERY' : 'GRID_FEED_IN',
             cost: strategy.noBattery.cost
           }
         }
