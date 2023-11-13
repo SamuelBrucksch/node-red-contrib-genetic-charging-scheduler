@@ -54,11 +54,11 @@
         required: true,
         validate: RED.validators.number(),
       },
-      efficiency: {
+      /*efficiency: {
         value: 90,
         required: true,
         validate: RED.validators.number(),
-      },
+      },*/
     },
     oneditprepare: () => {
       $('#node-input-excessPvEnergyUse').typedInput({
@@ -100,7 +100,7 @@
       $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-batteryCost').typedInput({ type: 'num', types: ['num'] })
-      $('#node-input-efficiency').typedInput({ type: 'num', types: ['num'] })
+      // $('#node-input-efficiency').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
@@ -175,12 +175,12 @@
     >
     <input type="text" style="width: 160px" id="node-input-batteryCost" />
   </div>
-  <div class="form-row">
+  <!--<div class="form-row">
     <label for="node-input-efficiency" style="width: 230px"
       >System efficiency</label
     >
     <input type="text" style="width: 160px" id="node-input-efficiency" />
-  </div>
+  </div>-->
 
   <h3>Genetic algorithm</h3>
   <div class="form-row">
