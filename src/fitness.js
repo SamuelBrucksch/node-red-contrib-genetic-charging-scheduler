@@ -28,9 +28,9 @@ const calculateNormalPeriod = (g1, g2) => {
 }
 
 function * allPeriodsGenerator (props, phenotype) {
-  const { batteryMaxEnergy, soc, totalDuration } = props
+  const { batteryMaxEnergy, soc, totalDuration, minSoc = 0 } = props
   const { excessPvEnergyUse, periods } = phenotype
-  let currentCharge = soc * batteryMaxEnergy
+  let currentCharge = Math.max(soc * batteryMaxEnergy - minSoc * batteryMaxEnergy, 0)
 
   const addCosts = (period) => {
     const score = calculatePeriodScore(
@@ -39,11 +39,11 @@ function * allPeriodsGenerator (props, phenotype) {
       excessPvEnergyUse,
       currentCharge
     )
-    period.socStart = currentCharge / batteryMaxEnergy
+    period.socStart = (currentCharge + minSoc * batteryMaxEnergy) / batteryMaxEnergy
     currentCharge += score[1]
     period.cost = score[0]
     period.charge = score[1]
-    period.socEnd = currentCharge / batteryMaxEnergy
+    period.socEnd = (currentCharge + minSoc * batteryMaxEnergy) / batteryMaxEnergy
     return period
   }
 

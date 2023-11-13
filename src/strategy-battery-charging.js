@@ -38,6 +38,7 @@ const node = (RED) => {
         const consumptionForecast = msg.payload?.consumptionForecast ?? []
         const productionForecast = msg.payload?.productionForecast ?? []
         const soc = msg.payload?.soc
+        const minSoc = msg.payload?.minSoc
 
         const strategy = calculateBatteryChargingStrategy({
           priceData,
@@ -54,7 +55,8 @@ const node = (RED) => {
           excessPvEnergyUse,
           soc: soc / 100,
           batteryCost,
-          efficiency
+          efficiency,
+          minSoc
         })
 
         const payload = msg.payload ?? {}
