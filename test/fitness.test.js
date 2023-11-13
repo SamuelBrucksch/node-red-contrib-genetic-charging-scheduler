@@ -239,6 +239,20 @@ describe('Fitness - calculateScore', () => {
         })
       ).toEqual([0, 1])
     })
+
+    test('battery cost does not affect discharge price', () => {
+      const props = {
+        importPrice: 2,
+        exportPrice: 2,
+        consumption: 1,
+        production: 0,
+        maxDischarge: 0.5,
+        batteryCost: 1
+      }
+      expect(
+        calculateDischargeScore(props)
+      ).toEqual([1, -0.5])
+    })
   })
 
   describe('Fitness - calculateChargeScore', () => {
@@ -475,5 +489,19 @@ describe('Fitness', () => {
       excessPvEnergyUse: 0
     })
     expect(score).toEqual(-1501.5)
+  })
+
+  test('battery cost affects charge price', () => {
+    const props = {
+      importPrice: 2,
+      exportPrice: 2,
+      consumption: 1,
+      production: 0,
+      maxCharge: 0,
+      batteryCost: 1
+    }
+    expect(
+      calculateChargeScore(props)
+    ).toEqual([(props.batteryCost + props.importPrice) * props.consumption, 0])
   })
 })
