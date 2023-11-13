@@ -48,7 +48,7 @@ const node = (RED) => {
           generations,
           mutationRate: mutationRate / 100,
           batteryMaxEnergy,
-          batteryMaxOutputPower: batteryMaxOutputPower ?? batteryMaxInputPower, // for backwards compatible with older versions
+          batteryMaxOutputPower,
           batteryMaxInputPower,
           averageConsumption,
           excessPvEnergyUse,
