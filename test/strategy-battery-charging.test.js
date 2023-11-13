@@ -244,7 +244,7 @@ describe('Battery charging strategy Node', () => {
         numberOfPricePeriods: 8,
         generations: 150,
         mutationRate: 3,
-        batteryMaxEnergy: 12.5,
+        batteryMaxEnergy: 14.52,
         batteryMaxInputPower: 3.2,
         batteryMaxOutputPower: 3.5,
         averageConsumption: 1,
@@ -661,7 +661,7 @@ describe('Battery charging strategy Node', () => {
             exportPrice: 0
           }
         ],
-        soc: 0,
+        soc: 16,
         schedule: [
           {
             start: '2023-11-12T20:00:00+01:00',
