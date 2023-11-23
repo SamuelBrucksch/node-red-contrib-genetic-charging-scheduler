@@ -50,7 +50,6 @@ describe('Crossover', () => {
 })
 
 describe('Calculate', () => {
-  mockRandomForEach(0.4)
   test('calculate', () => {
     let now = Date.now()
     now = now - (now % (60 * 60 * 1000))
@@ -74,7 +73,7 @@ describe('Calculate', () => {
       return { start: v.start, value: 1.5 }
     })
     const populationSize = 100
-    const numberOfPricePeriods = 2
+    const numberOfPricePeriods = priceData.length
     const generations = 500
     const mutationRate = 0.03
 
@@ -86,6 +85,7 @@ describe('Calculate', () => {
     const soc = 0
     const excessPvEnergyUse = 0
     const efficiency = 1
+    const batteryCost = 0
 
     const config = {
       priceData,
@@ -102,23 +102,24 @@ describe('Calculate', () => {
       consumptionForecast,
       soc,
       excessPvEnergyUse,
-      efficiency
+      efficiency,
+      batteryCost
     }
     const strategy = calculateBatteryChargingStrategy(config)
     const bestSchedule = strategy.best.schedule
     console.log(bestSchedule)
 
-    expect(bestSchedule.length).toEqual(3)
+    expect(bestSchedule.length).toEqual(2)
     expect(bestSchedule[0]).toMatchObject({
-      activity: 0
+      activity: 1,
+      duration: 60
     })
     expect(bestSchedule[1]).toMatchObject({
       activity: -1,
-      name: 'discharging'
+      name: 'discharging',
+      duration: 120
     })
-    expect(bestSchedule[2]).toMatchObject({
-      activity: 0
-    })
+
     expect(strategy.best.excessPvEnergyUse).toEqual(excessPvEnergyUse)
     expect(strategy.best.cost).not.toBeNull()
     expect(strategy.best.cost).not.toBeNaN()

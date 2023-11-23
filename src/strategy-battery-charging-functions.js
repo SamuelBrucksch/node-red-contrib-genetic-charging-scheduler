@@ -1,4 +1,3 @@
-const geneticalgorithm = require('geneticalgorithm')
 const geneticAlgorithmConstructor = require('geneticalgorithm')
 const { fitnessFunction, allPeriodsGenerator } = require('./fitness')
 
@@ -37,28 +36,11 @@ const repair = (phenotype, totalDuration) => {
 
 const mutationFunction = (props) => (phenotype) => {
   const { totalDuration, mutationRate } = props
-
-  const timeAdjustment = () => {
-    const range = totalDuration * 0.4
-    return random(0, range + 1) - Math.floor(range / 2)
-  }
-
   for (let i = 0; i < phenotype.periods.length; i += 1) {
     const g = phenotype.periods[i]
     if (Math.random() < mutationRate) {
       // Mutate action
       g.activity *= -1
-    }
-    if (Math.random() < mutationRate) {
-      // Mutate start time
-      const timeChange = timeAdjustment()
-      g.start += timeChange
-      g.duration -= timeChange
-    }
-    if (Math.random() < mutationRate) {
-      // Mutate duration
-      const timeChange = timeAdjustment()
-      g.duration += timeChange
     }
   }
   return {
@@ -92,7 +74,6 @@ const crossoverFunction = (props) => (phenotypeA, phenotypeB) => {
 
 const generatePopulation = (props) => {
   const {
-    totalDuration,
     populationSize,
     numberOfPricePeriods,
     excessPvEnergyUse
@@ -116,19 +97,11 @@ const generatePopulation = (props) => {
     for (let j = 0; j < numberOfPricePeriods; j += 1) {
       const gene = { activity: 0, start: 0, duration: 0 }
       gene.activity = Math.random() < 0.5 ? -1 : 1
-      gene.start = random(0, totalDuration)
-      gene.duration = 0
+      gene.start = j * 60
+      gene.duration = 60
       const location = sortedIndex(timePeriods, gene)
       timePeriods.splice(location, 0, gene)
     }
-
-    for (let j = 0; j < timePeriods.length - 1; j += 1) {
-      const maxDuration = timePeriods[j + 1].start - timePeriods[j].start
-      timePeriods[j].duration = random(0, maxDuration)
-    }
-    const maxDuration =
-      totalDuration - timePeriods[timePeriods.length - 1].start
-    timePeriods[timePeriods.length - 1].duration = random(0, maxDuration)
 
     population.push({
       periods: timePeriods,
@@ -162,6 +135,10 @@ const toSchedule = (props, phenotype) => {
   for (const period of allPeriodsGenerator(props, phenotype)) {
     if (period.duration <= 0) {
       continue
+    }
+
+    if (period.socStart === period.socEnd) {
+      period.activity = 0
     }
 
     if (

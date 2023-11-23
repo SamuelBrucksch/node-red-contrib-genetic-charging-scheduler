@@ -1,22 +1,3 @@
-function * splitIntoHourIntervalsGenerator (seed) {
-  let remainingDuration = seed.duration
-  let start = seed.start
-  while (remainingDuration > 0) {
-    const i = Math.min(60 - (start % 60), remainingDuration)
-    yield {
-      start,
-      duration: i,
-      activity: seed.activity
-    }
-    start += i
-    remainingDuration -= i
-  }
-}
-
-const splitIntoHourIntervals = (seed) => [
-  ...splitIntoHourIntervalsGenerator(seed)
-]
-
 const end = (g) => g.start + g.duration
 
 const calculateNormalPeriod = (g1, g2) => {
@@ -190,34 +171,33 @@ const calculatePeriodScore = (
   } = props
   let cost = 0
   let currentCharge = _currentCharge
-  for (const interval of splitIntoHourIntervals(period)) {
-    const duration = interval.duration / 60
-    const maxCharge = Math.min(
-      batteryMaxInputPower * duration,
-      batteryMaxEnergy - currentCharge
-    )
-    const maxDischarge = Math.min(
-      batteryMaxOutputPower * duration,
-      currentCharge
-    )
-    const { importPrice, exportPrice, consumption, production } =
-      input[Math.floor(interval.start / 60)]
+  const duration = period.duration / 60
+  const maxCharge = Math.min(
+    batteryMaxInputPower * duration,
+    batteryMaxEnergy - currentCharge
+  )
+  const maxDischarge = Math.min(
+    batteryMaxOutputPower * duration,
+    currentCharge
+  )
+  const { importPrice, exportPrice, consumption, production } =
+      input[Math.floor(period.start / 60)]
 
-    const v = calculateIntervalScore({
-      activity: interval.activity,
-      importPrice,
-      exportPrice,
-      consumption: consumption * duration,
-      production: production * duration,
-      maxCharge,
-      maxDischarge,
-      excessPvEnergyUse,
-      batteryCost,
-      efficiency
-    })
-    cost += v[0]
-    currentCharge += v[1]
-  }
+  const v = calculateIntervalScore({
+    activity: period.activity,
+    importPrice,
+    exportPrice,
+    consumption: consumption * duration,
+    production: production * duration,
+    maxCharge,
+    maxDischarge,
+    excessPvEnergyUse,
+    batteryCost,
+    efficiency
+  })
+  cost += v[0]
+  currentCharge += v[1]
+
   return [cost, currentCharge - _currentCharge]
 }
 
@@ -233,7 +213,6 @@ const fitnessFunction = (props) => (phenotype) => {
 
 module.exports = {
   fitnessFunction,
-  splitIntoHourIntervals,
   allPeriodsGenerator,
   allPeriods,
   calculatePeriodScore,

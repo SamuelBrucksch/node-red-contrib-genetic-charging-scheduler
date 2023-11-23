@@ -1,7 +1,6 @@
 const { expect, describe } = require('@jest/globals')
 const {
   fitnessFunction,
-  splitIntoHourIntervals,
   allPeriods,
   calculatePeriodScore,
   calculateDischargeScore,
@@ -69,39 +68,6 @@ beforeEach(() => {
       consumption: i.consumption * props.batteryMaxOutputPower
     }))
   }
-})
-
-describe('Fitness - splitIntoHourIntervals', () => {
-  test('should split into one intervals', () => {
-    expect(
-      splitIntoHourIntervals({ start: 0, activity: 1, duration: 60 })
-    ).toMatchObject([{ start: 0, activity: 1, duration: 60 }])
-  })
-  test('should split into two intervals', () => {
-    expect(
-      splitIntoHourIntervals({ start: 0, activity: 1, duration: 90 })
-    ).toMatchObject([
-      { start: 0, activity: 1, duration: 60 },
-      { start: 60, activity: 1, duration: 30 }
-    ])
-  })
-  test('should split into hour two 30min intervals', () => {
-    expect(
-      splitIntoHourIntervals({ start: 30, activity: 1, duration: 60 })
-    ).toMatchObject([
-      { start: 30, activity: 1, duration: 30 },
-      { start: 60, activity: 1, duration: 30 }
-    ])
-  })
-  test('should split into 3 intervals', () => {
-    expect(
-      splitIntoHourIntervals({ start: 30, activity: 1, duration: 120 })
-    ).toMatchObject([
-      { start: 30, activity: 1, duration: 30 },
-      { start: 60, activity: 1, duration: 60 },
-      { start: 120, activity: 1, duration: 30 }
-    ])
-  })
 })
 
 describe('Fitness - allPeriods', () => {
@@ -650,7 +616,7 @@ describe('Fitness', () => {
       }
     ]
     const score = fitnessFunction(props)({
-      periods: [{ start: 0, duration: 180, activity: 1 }],
+      periods: [{ start: 0, duration: 60, activity: 1 }, { start: 60, duration: 60, activity: 1 }, { start: 120, duration: 60, activity: 1 }],
       excessPvEnergyUse: 0
     })
     expect(score).toEqual(-1501.5)
