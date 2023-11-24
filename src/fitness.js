@@ -11,20 +11,25 @@ const calculateNormalPeriod = (g1, g2) => {
 function * allPeriodsGenerator (props, phenotype) {
   const { batteryMaxEnergy, soc, totalDuration, minSoc = 0 } = props
   const { excessPvEnergyUse, periods } = phenotype
-  let currentCharge = Math.max(soc * batteryMaxEnergy - minSoc * batteryMaxEnergy, 0)
+
+  let currentCharge = soc * batteryMaxEnergy
+  const minCharge = minSoc * batteryMaxEnergy
 
   const addCosts = (period) => {
     const score = calculatePeriodScore(
       props,
       period,
       excessPvEnergyUse,
-      currentCharge
+      currentCharge,
+      phenotype.lastChargePrice,
+      minCharge
     )
-    period.socStart = (currentCharge + minSoc * batteryMaxEnergy) / batteryMaxEnergy
+    period.socStart = currentCharge / batteryMaxEnergy
     currentCharge += score[1]
     period.cost = score[0]
     period.charge = score[1]
-    period.socEnd = (currentCharge + minSoc * batteryMaxEnergy) / batteryMaxEnergy
+    period.socEnd = currentCharge / batteryMaxEnergy
+    phenotype.lastChargePrice = score[2]
     return period
   }
 
@@ -125,7 +130,7 @@ const calculateNormalScore = (props) => {
 }
 
 const calculateChargeScore = (props) => {
-  const { exportPrice, importPrice, consumption, production, maxCharge, batteryCost, efficiency } = props
+  const { exportPrice, importPrice, consumption, production, maxCharge, efficiency } = props
 
   // we assume half of the loss is on charge, and the other on discharge
   const chargeEfficiency = (1 - efficiency) / 2
@@ -136,7 +141,7 @@ const calculateChargeScore = (props) => {
   const consumedFromGrid = consumption - consumedFromProduction
   const chargedFromGrid = maxCharge - batteryChargeFromProduction
 
-  const cost = (consumedFromGrid + chargedFromGrid) * (importPrice + batteryCost) - soldFromProduction * exportPrice
+  const cost = (consumedFromGrid + chargedFromGrid) * importPrice - soldFromProduction * exportPrice
   const charge = batteryChargeFromProduction + chargedFromGrid
 
   const loss = charge * chargeEfficiency
@@ -155,11 +160,21 @@ const calculateIntervalScore = (props) => {
   }
 }
 
+const arrayAvg = (arr) => {
+  let result = 0
+  for (const res of arr) {
+    result += res
+  }
+  return result / arr.length
+}
+
 const calculatePeriodScore = (
   props,
   period,
   excessPvEnergyUse,
-  _currentCharge
+  _currentCharge,
+  lastChargePrice,
+  minCharge
 ) => {
   const {
     input,
@@ -178,10 +193,24 @@ const calculatePeriodScore = (
   )
   const maxDischarge = Math.min(
     batteryMaxOutputPower * duration,
-    currentCharge
+    currentCharge - minCharge
   )
   const { importPrice, exportPrice, consumption, production } =
       input[Math.floor(period.start / 60)]
+
+  let _lastChargePrice
+  if (period.activity === 1) {
+    // if we charge, store the price, so we can use it to check wether we should idle or discharge after that
+    if (lastChargePrice) {
+      _lastChargePrice = [...lastChargePrice, importPrice]
+    } else {
+      _lastChargePrice = [importPrice]
+    }
+  } else if (period.activity !== 1 && lastChargePrice && arrayAvg(lastChargePrice) + batteryCost >= importPrice) {
+    // if the price we charged for is close to next period price, we just idle instead of discharging
+    period.activity = 0
+    _lastChargePrice = lastChargePrice
+  }
 
   const v = calculateIntervalScore({
     activity: period.activity,
@@ -198,7 +227,7 @@ const calculatePeriodScore = (
   cost += v[0]
   currentCharge += v[1]
 
-  return [cost, currentCharge - _currentCharge]
+  return [cost, currentCharge - _currentCharge, _lastChargePrice]
 }
 
 const fitnessFunction = (props) => (phenotype) => {
