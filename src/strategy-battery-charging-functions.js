@@ -78,29 +78,15 @@ const generatePopulation = (props) => {
     numberOfPricePeriods,
     excessPvEnergyUse
   } = props
-  const sortedIndex = (array, value) => {
-    let low = 0
-    let high = array.length
-
-    while (low < high) {
-      // eslint-disable-next-line no-bitwise
-      const mid = (low + high) >>> 1
-      if (array[mid].start < value.start) low = mid + 1
-      else high = mid
-    }
-    return low
-  }
-
   const population = []
-  for (let i = 0; i < populationSize; i += 1) {
+  for (let i = 0; i < populationSize; i++) {
     const timePeriods = []
-    for (let j = 0; j < numberOfPricePeriods; j += 1) {
+    for (let j = 0; j < numberOfPricePeriods; j++) {
       const gene = { activity: 0, start: 0, duration: 0 }
       gene.activity = Math.random() < 0.5 ? -1 : 1
       gene.start = j * 60
       gene.duration = 60
-      const location = sortedIndex(timePeriods, gene)
-      timePeriods.splice(location, 0, gene)
+      timePeriods.push(gene)
     }
 
     population.push({
@@ -133,10 +119,6 @@ const toSchedule = (props, phenotype) => {
   // props, totalDuration, excessPvEnergyUse, p
   const periodStart = new Date(input[0].start)
   for (const period of allPeriodsGenerator(props, phenotype)) {
-    if (period.duration <= 0) {
-      continue
-    }
-
     if (period.socStart === period.socEnd) {
       period.activity = 0
     }
