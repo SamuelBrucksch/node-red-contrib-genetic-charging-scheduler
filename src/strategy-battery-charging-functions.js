@@ -119,30 +119,16 @@ const toSchedule = (props, phenotype) => {
   // props, totalDuration, excessPvEnergyUse, p
   const periodStart = new Date(input[0].start)
   for (const period of allPeriodsGenerator(props, phenotype)) {
-    if (period.socStart === period.socEnd) {
-      period.activity = 0
-    }
-
-    if (
-      schedule.length &&
-      period.activity === schedule.at(-1).activity
-    ) {
-      schedule.at(-1).duration += period.duration
-      schedule.at(-1).cost += period.cost
-      schedule.at(-1).charge += period.charge
-      schedule.at(-1).socEnd = period.socEnd * 100
-    } else {
-      schedule.push({
-        start: addMinutes(periodStart, period.start),
-        activity: period.activity,
-        name: activityToName(period.activity),
-        duration: period.duration,
-        cost: period.cost,
-        charge: period.charge,
-        socStart: period.socStart * 100,
-        socEnd: period.socEnd * 100
-      })
-    }
+    schedule.push({
+      start: addMinutes(periodStart, period.start),
+      activity: period.activity,
+      name: activityToName(period.activity),
+      duration: period.duration,
+      cost: period.cost,
+      charge: period.charge,
+      socStart: period.socStart * 100,
+      socEnd: period.socEnd * 100
+    })
   }
 
   return schedule
