@@ -19,11 +19,6 @@
         required: true,
         validate: RED.validators.number(),
       },
-      numberOfPricePeriods: {
-        value: 8,
-        required: true,
-        validate: RED.validators.number(),
-      },
       batteryMaxEnergy: {
         value: 5,
         required: true,
@@ -86,10 +81,6 @@
         types: ['num'],
       })
       $('#node-input-batteryMaxEnergy').typedInput({
-        type: 'num',
-        types: ['num'],
-      })
-      $('#node-input-numberOfPricePeriods').typedInput({
         type: 'num',
         types: ['num'],
       })
@@ -202,17 +193,6 @@
       >Mutation chance (%)</label
     >
     <input type="text" style="width: 160px" id="node-input-mutationRate" />
-  </div>
-
-  <div class="form-row">
-    <label for="node-input-numberOfPricePeriods" style="width: 230px"
-      >Charging/discharging periods</label
-    >
-    <input
-      type="text"
-      style="width: 160px"
-      id="node-input-numberOfPricePeriods"
-    />
   </div>
 </script>
 

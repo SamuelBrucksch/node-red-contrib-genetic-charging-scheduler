@@ -7,7 +7,6 @@ const node = (RED) => {
     'strategy-genetic-charging',
     function callback (config) {
       config.populationSize = parseInt(config.populationSize)
-      config.numberOfPricePeriods = parseInt(config.numberOfPricePeriods)
       config.generations = parseInt(config.generations)
       config.mutationRate = parseInt(config.mutationRate)
       config.batteryMaxEnergy = parseFloat(config.batteryMaxEnergy)
@@ -21,7 +20,6 @@ const node = (RED) => {
 
       const {
         populationSize,
-        numberOfPricePeriods,
         generations,
         mutationRate,
         batteryMaxEnergy,
@@ -45,7 +43,6 @@ const node = (RED) => {
           consumptionForecast,
           productionForecast,
           populationSize,
-          numberOfPricePeriods,
           generations,
           mutationRate: mutationRate / 100,
           batteryMaxEnergy,

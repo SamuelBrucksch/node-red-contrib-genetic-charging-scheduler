@@ -209,7 +209,8 @@ const calculateBatteryChargingStrategy = (config) => {
   const props = {
     ...config,
     input,
-    totalDuration: input.length * 60
+    totalDuration: input.length * 60,
+    numberOfPricePeriods: input.length
   }
 
   const options = {
