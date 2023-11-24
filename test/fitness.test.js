@@ -125,7 +125,7 @@ describe('Fitness - allPeriods', () => {
       { start: 0, duration: 70, activity: 0 },
       { start: 70, duration: 80, activity: 1 },
       { start: 150, duration: 10, activity: 0 },
-      { start: 160, duration: 30, activity: 0 },
+      { start: 160, duration: 30, activity: -1 },
       { start: 190, duration: 110, activity: 0 }
     ])
   })
@@ -534,7 +534,6 @@ describe('Fitness - calculateScore', () => {
         period,
         excessPvEnergyUse,
         currentCharge,
-        undefined,
         0
       )
       const dischargeSpeed = (score[1] / (period.duration / 60)) * -1
@@ -558,7 +557,7 @@ describe('Fitness', () => {
       ],
       excessPvEnergyUse: 0
     })
-    expect(score).toEqual(-4)
+    expect(score).toEqual(-3)
   })
 
   test('should calculate fitness with soc', () => {
@@ -571,7 +570,7 @@ describe('Fitness', () => {
       ],
       excessPvEnergyUse: 0
     })
-    expect(score).toEqual(-2)
+    expect(score).toEqual(-1)
   })
 
   test('should calculate 180 min charge period with full battery', () => {

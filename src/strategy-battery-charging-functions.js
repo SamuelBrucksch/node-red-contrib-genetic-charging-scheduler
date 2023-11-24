@@ -1,5 +1,5 @@
 const geneticAlgorithmConstructor = require('geneticalgorithm')
-const { fitnessFunction, allPeriodsGenerator } = require('./fitness')
+const { fitnessFunction, allPeriodsGenerator, doesABeatBFunction } = require('./fitness')
 
 const random = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min
@@ -186,6 +186,7 @@ const calculateBatteryChargingStrategy = (config) => {
     crossoverFunction: crossoverFunction(props),
     fitnessFunction: fitnessFunction(props),
     population: generatePopulation(props)
+    // doesABeatBFunction: doesABeatBFunction(props)
   }
 
   const geneticAlgorithm = geneticAlgorithmConstructor(options)
