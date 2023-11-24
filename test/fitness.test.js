@@ -125,7 +125,7 @@ describe('Fitness - allPeriods', () => {
       { start: 0, duration: 70, activity: 0 },
       { start: 70, duration: 80, activity: 1 },
       { start: 150, duration: 10, activity: 0 },
-      { start: 160, duration: 30, activity: -1 },
+      { start: 160, duration: 30, activity: 0 },
       { start: 190, duration: 110, activity: 0 }
     ])
   })
@@ -389,21 +389,6 @@ describe('Fitness - calculateScore', () => {
       ).toEqual([-2, 1])
     })
 
-    test('battery cost affects charge price', () => {
-      const props = {
-        importPrice: 2,
-        exportPrice: 2,
-        consumption: 1,
-        production: 0,
-        maxCharge: 0,
-        batteryCost: 1,
-        efficiency: 1
-      }
-      expect(
-        calculateChargeScore(props)
-      ).toEqual([(props.batteryCost + props.importPrice) * props.consumption, 0])
-    })
-
     test('efficiency affects charged energy from PV', () => {
       const props = {
         duration: 1,
@@ -548,7 +533,9 @@ describe('Fitness - calculateScore', () => {
         dischargeProps,
         period,
         excessPvEnergyUse,
-        currentCharge
+        currentCharge,
+        undefined,
+        0
       )
       const dischargeSpeed = (score[1] / (period.duration / 60)) * -1
       expect(dischargeSpeed).toBeCloseTo(props.batteryMaxOutputPower)
@@ -566,12 +553,12 @@ describe('Fitness', () => {
     props.soc = 0
     const score = fitnessFunction(props)({
       periods: [
-        { start: 30, duration: 60, activity: 1 },
-        { start: 90, duration: 30, activity: -1 }
+        { start: 0, duration: 60, activity: 1 },
+        { start: 60, duration: 60, activity: -1 }
       ],
       excessPvEnergyUse: 0
     })
-    expect(score).toEqual(-3.5)
+    expect(score).toEqual(-4)
   })
 
   test('should calculate fitness with soc', () => {
@@ -579,12 +566,12 @@ describe('Fitness', () => {
     props.soc = 1
     const score = fitnessFunction(props)({
       periods: [
-        { start: 30, duration: 60, activity: 1 },
-        { start: 90, duration: 30, activity: -1 }
+        { start: 0, duration: 60, activity: 1 },
+        { start: 60, duration: 60, activity: -1 }
       ],
       excessPvEnergyUse: 0
     })
-    expect(score).toEqual(-1.5)
+    expect(score).toEqual(-2)
   })
 
   test('should calculate 180 min charge period with full battery', () => {

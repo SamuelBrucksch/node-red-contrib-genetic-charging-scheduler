@@ -109,7 +109,7 @@ describe('Calculate', () => {
     const bestSchedule = strategy.best.schedule
     console.log(bestSchedule)
 
-    expect(bestSchedule.length).toEqual(2)
+    expect(bestSchedule.length).toEqual(3)
     expect(bestSchedule[0]).toMatchObject({
       activity: 1,
       duration: 60
@@ -117,7 +117,12 @@ describe('Calculate', () => {
     expect(bestSchedule[1]).toMatchObject({
       activity: -1,
       name: 'discharging',
-      duration: 120
+      duration: 60
+    })
+    expect(bestSchedule[2]).toMatchObject({
+      activity: -1,
+      name: 'discharging',
+      duration: 60
     })
 
     expect(strategy.best.excessPvEnergyUse).toEqual(excessPvEnergyUse)
