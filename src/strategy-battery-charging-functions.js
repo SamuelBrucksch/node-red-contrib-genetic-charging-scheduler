@@ -1,5 +1,9 @@
 const geneticAlgorithmConstructor = require('geneticalgorithm')
-const { fitnessFunction, allPeriodsGenerator, doesABeatBFunction } = require('./fitness')
+const {
+  fitnessFunction,
+  allPeriodsGenerator,
+  doesABeatBFunction
+} = require('./fitness')
 
 const random = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min
@@ -40,7 +44,17 @@ const mutationFunction = (props) => (phenotype) => {
     const g = phenotype.periods[i]
     if (Math.random() < mutationRate) {
       // Mutate action
-      g.activity *= -1
+
+      const oldValue = g.activity
+
+      const random = Math.random() <= 0.5
+      if (oldValue === -1) {
+        g.activity = random ? 0 : 1
+      } else if (oldValue === 0) {
+        g.activity = random ? -1 : 1
+      } else {
+        g.activity = random ? 0 : -1
+      }
     }
   }
   return {
@@ -72,18 +86,37 @@ const crossoverFunction = (props) => (phenotypeA, phenotypeB) => {
   ]
 }
 
-const generatePopulation = (props) => {
-  const {
-    populationSize,
-    numberOfPricePeriods,
+const generateStandardPopulation = (activity, numberOfPricePeriods, excessPvEnergyUse) => {
+  const timePeriods = []
+  for (let j = 0; j < numberOfPricePeriods; j++) {
+    const gene = { activity: 0, start: 0, duration: 0 }
+    gene.activity = activity
+    gene.start = j * 60
+    gene.duration = 60
+    timePeriods.push(gene)
+  }
+
+  return {
+    periods: timePeriods,
     excessPvEnergyUse
-  } = props
+  }
+}
+
+const generatePopulation = (props) => {
+  const { populationSize, numberOfPricePeriods, excessPvEnergyUse } = props
   const population = []
+
+  // push some standard populations with charge only, discharge only and idle only
+  population.push(generateStandardPopulation(-1, numberOfPricePeriods, excessPvEnergyUse))
+  population.push(generateStandardPopulation(0, numberOfPricePeriods, excessPvEnergyUse))
+  population.push(generateStandardPopulation(1, numberOfPricePeriods, excessPvEnergyUse))
+
   for (let i = 0; i < populationSize; i++) {
     const timePeriods = []
     for (let j = 0; j < numberOfPricePeriods; j++) {
       const gene = { activity: 0, start: 0, duration: 0 }
-      gene.activity = Math.random() < 0.5 ? -1 : 1
+      const random = Math.random()
+      gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
       gene.start = j * 60
       gene.duration = 60
       timePeriods.push(gene)
@@ -174,19 +207,23 @@ const calculateBatteryChargingStrategy = (config) => {
   const input = mergeInput(config)
   if (input === undefined || input.length === 0) return {}
 
+  const numberOfPricePeriods = Math.min(36, input.length)
+
+  // REVISIT: improve battery cost calculation, this is probably good enough for a first try
   const props = {
     ...config,
+    batteryCost: Math.min(...input.slice(0, 12).map(p => p.importPrice)) + config.batteryCost,
     input,
-    totalDuration: input.length * 60,
-    numberOfPricePeriods: input.length
+    totalDuration: numberOfPricePeriods * 60,
+    numberOfPricePeriods
   }
 
   const options = {
     mutationFunction: mutationFunction(props),
     crossoverFunction: crossoverFunction(props),
     fitnessFunction: fitnessFunction(props),
-    population: generatePopulation(props)
-    // doesABeatBFunction: doesABeatBFunction(props)
+    population: generatePopulation(props),
+    doesABeatBFunction: doesABeatBFunction(props)
   }
 
   const geneticAlgorithm = geneticAlgorithmConstructor(options)

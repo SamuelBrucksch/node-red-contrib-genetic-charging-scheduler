@@ -250,7 +250,7 @@ describe('Battery charging strategy Node', () => {
         averageConsumption: 1,
         wires: [['n2']],
         excessPvEnergyUse: '1',
-        batteryCost: 0.05,
+        batteryCost: 0.03,
         efficiency: 0.9,
         minSoc: 15
       },
@@ -277,7 +277,778 @@ describe('Battery charging strategy Node', () => {
         done()
       })
 
-      const inputPayload = { minSoc: 15, soc: 71.7, consumptionForecast: [{ start: '2023-11-23T23:00:00.000Z', value: 0.35 }, { start: '2023-11-24T00:00:00.000Z', value: 0.35 }, { start: '2023-11-24T01:00:00.000Z', value: 0.35 }, { start: '2023-11-24T02:00:00.000Z', value: 0.35 }, { start: '2023-11-24T03:00:00.000Z', value: 0.35 }, { start: '2023-11-24T04:00:00.000Z', value: 0.35 }, { start: '2023-11-24T05:00:00.000Z', value: 0.5 }, { start: '2023-11-24T06:00:00.000Z', value: 0.55 }, { start: '2023-11-24T07:00:00.000Z', value: 1 }, { start: '2023-11-24T08:00:00.000Z', value: 1 }, { start: '2023-11-24T09:00:00.000Z', value: 1 }, { start: '2023-11-24T10:00:00.000Z', value: 2 }, { start: '2023-11-24T11:00:00.000Z', value: 1.5 }, { start: '2023-11-24T12:00:00.000Z', value: 0.6 }, { start: '2023-11-24T13:00:00.000Z', value: 0.6 }, { start: '2023-11-24T14:00:00.000Z', value: 0.6 }, { start: '2023-11-24T15:00:00.000Z', value: 0.5 }, { start: '2023-11-24T16:00:00.000Z', value: 0.4 }, { start: '2023-11-24T17:00:00.000Z', value: 0.5 }, { start: '2023-11-24T18:00:00.000Z', value: 0.6 }, { start: '2023-11-24T19:00:00.000Z', value: 0.6 }, { start: '2023-11-24T20:00:00.000Z', value: 0.6 }, { start: '2023-11-24T21:00:00.000Z', value: 0.6 }, { start: '2023-11-24T22:00:00.000Z', value: 0.35 }, { start: '2023-11-24T23:00:00.000Z', value: 0.35 }, { start: '2023-11-25T00:00:00.000Z', value: 0.35 }, { start: '2023-11-25T01:00:00.000Z', value: 0.35 }, { start: '2023-11-25T02:00:00.000Z', value: 0.35 }, { start: '2023-11-25T03:00:00.000Z', value: 0.35 }, { start: '2023-11-25T04:00:00.000Z', value: 0.35 }, { start: '2023-11-25T05:00:00.000Z', value: 0.5 }, { start: '2023-11-25T06:00:00.000Z', value: 0.55 }, { start: '2023-11-25T07:00:00.000Z', value: 1 }, { start: '2023-11-25T08:00:00.000Z', value: 1 }, { start: '2023-11-25T09:00:00.000Z', value: 1 }, { start: '2023-11-25T10:00:00.000Z', value: 2 }, { start: '2023-11-25T11:00:00.000Z', value: 1.5 }, { start: '2023-11-25T12:00:00.000Z', value: 0.6 }, { start: '2023-11-25T13:00:00.000Z', value: 0.6 }, { start: '2023-11-25T14:00:00.000Z', value: 0.6 }, { start: '2023-11-25T15:00:00.000Z', value: 0.5 }, { start: '2023-11-25T16:00:00.000Z', value: 0.4 }, { start: '2023-11-25T17:00:00.000Z', value: 0.5 }, { start: '2023-11-25T18:00:00.000Z', value: 0.6 }, { start: '2023-11-25T19:00:00.000Z', value: 0.6 }, { start: '2023-11-25T20:00:00.000Z', value: 0.6 }, { start: '2023-11-25T21:00:00.000Z', value: 0.6 }, { start: '2023-11-25T22:00:00.000Z', value: 0.35 }, { start: '2023-11-25T23:00:00.000Z', value: 0.35 }, { start: '2023-11-26T00:00:00.000Z', value: 0.35 }, { start: '2023-11-26T01:00:00.000Z', value: 0.35 }, { start: '2023-11-26T02:00:00.000Z', value: 0.35 }, { start: '2023-11-26T03:00:00.000Z', value: 0.35 }, { start: '2023-11-26T04:00:00.000Z', value: 0.35 }, { start: '2023-11-26T05:00:00.000Z', value: 0.5 }], productionForecast: [{ start: '2023-11-23T13:00:00.000Z', value: 0 }, { start: '2023-11-23T14:00:00.000Z', value: 0.3636050772365 }, { start: '2023-11-23T15:00:00.000Z', value: 0 }, { start: '2023-11-23T16:00:00.000Z', value: 0 }, { start: '2023-11-23T17:00:00.000Z', value: 0 }, { start: '2023-11-23T18:00:00.000Z', value: 0 }, { start: '2023-11-23T19:00:00.000Z', value: 0 }, { start: '2023-11-23T20:00:00.000Z', value: 0 }, { start: '2023-11-23T21:00:00.000Z', value: 0 }, { start: '2023-11-23T22:00:00.000Z', value: 0 }, { start: '2023-11-23T23:00:00.000Z', value: 0 }, { start: '2023-11-24T00:00:00.000Z', value: 0 }, { start: '2023-11-24T01:00:00.000Z', value: 0 }, { start: '2023-11-24T02:00:00.000Z', value: 0 }, { start: '2023-11-24T03:00:00.000Z', value: 0 }, { start: '2023-11-24T04:00:00.000Z', value: 0 }, { start: '2023-11-24T05:00:00.000Z', value: 0 }, { start: '2023-11-24T06:00:00.000Z', value: 0 }, { start: '2023-11-24T07:00:00.000Z', value: 0.5183178116207 }, { start: '2023-11-24T08:00:00.000Z', value: 0.9642737646882 }, { start: '2023-11-24T09:00:00.000Z', value: 1.0528082798181 }, { start: '2023-11-24T10:00:00.000Z', value: 0.8706856893135 }, { start: '2023-11-24T11:00:00.000Z', value: 1.3892482121159 }, { start: '2023-11-24T12:00:00.000Z', value: 1.4836947690816 }, { start: '2023-11-24T13:00:00.000Z', value: 0.6548044487611 }, { start: '2023-11-24T14:00:00.000Z', value: 0.4144491756238 }, { start: '2023-11-24T15:00:00.000Z', value: 0 }, { start: '2023-11-24T16:00:00.000Z', value: 0 }, { start: '2023-11-24T17:00:00.000Z', value: 0 }, { start: '2023-11-24T18:00:00.000Z', value: 0 }, { start: '2023-11-24T19:00:00.000Z', value: 0 }, { start: '2023-11-24T20:00:00.000Z', value: 0 }, { start: '2023-11-24T21:00:00.000Z', value: 0 }, { start: '2023-11-24T22:00:00.000Z', value: 0 }, { start: '2023-11-24T23:00:00.000Z', value: 0 }, { start: '2023-11-25T00:00:00.000Z', value: 0 }, { start: '2023-11-25T01:00:00.000Z', value: 0 }, { start: '2023-11-25T02:00:00.000Z', value: 0 }, { start: '2023-11-25T03:00:00.000Z', value: 0 }, { start: '2023-11-25T04:00:00.000Z', value: 0 }, { start: '2023-11-25T05:00:00.000Z', value: 0 }, { start: '2023-11-25T06:00:00.000Z', value: 0 }, { start: '2023-11-25T07:00:00.000Z', value: 0.0431417708542 }, { start: '2023-11-25T08:00:00.000Z', value: 0.5070996146722 }, { start: '2023-11-25T09:00:00.000Z', value: 0.8827018860273 }, { start: '2023-11-25T10:00:00.000Z', value: 1.6369645468836 }, { start: '2023-11-25T11:00:00.000Z', value: 1.6445561791493 }, { start: '2023-11-25T12:00:00.000Z', value: 1.5152865824192 }, { start: '2023-11-25T13:00:00.000Z', value: 1.4177374529408 }, { start: '2023-11-25T14:00:00.000Z', value: 0.4314655739971 }, { start: '2023-11-25T15:00:00.000Z', value: 0 }, { start: '2023-11-25T16:00:00.000Z', value: 0 }, { start: '2023-11-25T17:00:00.000Z', value: 0 }, { start: '2023-11-25T18:00:00.000Z', value: 0 }, { start: '2023-11-25T19:00:00.000Z', value: 0 }, { start: '2023-11-25T20:00:00.000Z', value: 0 }, { start: '2023-11-25T21:00:00.000Z', value: 0 }, { start: '2023-11-25T22:00:00.000Z', value: 0 }, { start: '2023-11-25T23:00:00.000Z', value: 0 }, { start: '2023-11-26T00:00:00.000Z', value: 0 }, { start: '2023-11-26T01:00:00.000Z', value: 0 }, { start: '2023-11-26T02:00:00.000Z', value: 0 }, { start: '2023-11-26T03:00:00.000Z', value: 0 }, { start: '2023-11-26T04:00:00.000Z', value: 0 }, { start: '2023-11-26T05:00:00.000Z', value: 0 }, { start: '2023-11-26T06:00:00.000Z', value: 0 }, { start: '2023-11-26T07:00:00.000Z', value: 0.3749777329276 }, { start: '2023-11-26T08:00:00.000Z', value: 0.7572518902302 }, { start: '2023-11-26T09:00:00.000Z', value: 0.8915098151355001 }, { start: '2023-11-26T10:00:00.000Z', value: 1.5837716563605 }, { start: '2023-11-26T11:00:00.000Z', value: 1.5969300377929 }, { start: '2023-11-26T12:00:00.000Z', value: 1.6263534433228002 }, { start: '2023-11-26T13:00:00.000Z', value: 1.3938543419215 }, { start: '2023-11-26T14:00:00.000Z', value: 0.4790221730812 }, { start: '2023-11-26T15:00:00.000Z', value: 0 }, { start: '2023-11-26T16:00:00.000Z', value: 0 }, { start: '2023-11-26T17:00:00.000Z', value: 0 }, { start: '2023-11-26T18:00:00.000Z', value: 0 }, { start: '2023-11-26T19:00:00.000Z', value: 0 }, { start: '2023-11-26T20:00:00.000Z', value: 0 }, { start: '2023-11-26T21:00:00.000Z', value: 0 }, { start: '2023-11-26T22:00:00.000Z', value: 0 }, { start: '2023-11-26T23:00:00.000Z', value: 0 }, { start: '2023-11-27T00:00:00.000Z', value: 0 }, { start: '2023-11-27T01:00:00.000Z', value: 0 }, { start: '2023-11-27T02:00:00.000Z', value: 0 }, { start: '2023-11-27T03:00:00.000Z', value: 0 }, { start: '2023-11-27T04:00:00.000Z', value: 0 }, { start: '2023-11-27T05:00:00.000Z', value: 0 }, { start: '2023-11-27T06:00:00.000Z', value: 0 }, { start: '2023-11-27T07:00:00.000Z', value: 0.3662852648801 }, { start: '2023-11-27T08:00:00.000Z', value: 0.7638403552479 }, { start: '2023-11-27T09:00:00.000Z', value: 0.8918563424956 }, { start: '2023-11-27T10:00:00.000Z', value: 1.5681675726431998 }, { start: '2023-11-27T11:00:00.000Z', value: 1.6016913949357 }, { start: '2023-11-27T12:00:00.000Z', value: 1.6479092766562 }, { start: '2023-11-27T13:00:00.000Z', value: 1.3938543419215 }], priceData: [{ value: 0.1631, start: '2023-11-24T00:00:00.000+01:00', exportPrice: 0 }, { value: 0.1615, start: '2023-11-24T01:00:00.000+01:00', exportPrice: 0 }, { value: 0.1615, start: '2023-11-24T02:00:00.000+01:00', exportPrice: 0 }, { value: 0.1617, start: '2023-11-24T03:00:00.000+01:00', exportPrice: 0 }, { value: 0.1632, start: '2023-11-24T04:00:00.000+01:00', exportPrice: 0 }, { value: 0.199, start: '2023-11-24T05:00:00.000+01:00', exportPrice: 0 }, { value: 0.2453, start: '2023-11-24T06:00:00.000+01:00', exportPrice: 0 }, { value: 0.2735, start: '2023-11-24T07:00:00.000+01:00', exportPrice: 0 }, { value: 0.2954, start: '2023-11-24T08:00:00.000+01:00', exportPrice: 0 }, { value: 0.2732, start: '2023-11-24T09:00:00.000+01:00', exportPrice: 0 }, { value: 0.2648, start: '2023-11-24T10:00:00.000+01:00', exportPrice: 0 }, { value: 0.2558, start: '2023-11-24T11:00:00.000+01:00', exportPrice: 0 }, { value: 0.2522, start: '2023-11-24T12:00:00.000+01:00', exportPrice: 0 }, { value: 0.2464, start: '2023-11-24T13:00:00.000+01:00', exportPrice: 0 }, { value: 0.251, start: '2023-11-24T14:00:00.000+01:00', exportPrice: 0 }, { value: 0.2534, start: '2023-11-24T15:00:00.000+01:00', exportPrice: 0 }, { value: 0.2628, start: '2023-11-24T16:00:00.000+01:00', exportPrice: 0 }, { value: 0.2696, start: '2023-11-24T17:00:00.000+01:00', exportPrice: 0 }, { value: 0.2687, start: '2023-11-24T18:00:00.000+01:00', exportPrice: 0 }, { value: 0.264, start: '2023-11-24T19:00:00.000+01:00', exportPrice: 0 }, { value: 0.2583, start: '2023-11-24T20:00:00.000+01:00', exportPrice: 0 }, { value: 0.2503, start: '2023-11-24T21:00:00.000+01:00', exportPrice: 0 }, { value: 0.2536, start: '2023-11-24T22:00:00.000+01:00', exportPrice: 0 }, { value: 0.248, start: '2023-11-24T23:00:00.000+01:00', exportPrice: 0 }, { value: 0.2542, start: '2023-11-25T00:00:00.000+01:00', exportPrice: 0 }, { value: 0.2494, start: '2023-11-25T01:00:00.000+01:00', exportPrice: 0 }, { value: 0.2471, start: '2023-11-25T02:00:00.000+01:00', exportPrice: 0 }, { value: 0.2466, start: '2023-11-25T03:00:00.000+01:00', exportPrice: 0 }, { value: 0.2446, start: '2023-11-25T04:00:00.000+01:00', exportPrice: 0 }, { value: 0.2496, start: '2023-11-25T05:00:00.000+01:00', exportPrice: 0 }, { value: 0.2563, start: '2023-11-25T06:00:00.000+01:00', exportPrice: 0 }, { value: 0.265, start: '2023-11-25T07:00:00.000+01:00', exportPrice: 0 }, { value: 0.2735, start: '2023-11-25T08:00:00.000+01:00', exportPrice: 0 }, { value: 0.2705, start: '2023-11-25T09:00:00.000+01:00', exportPrice: 0 }, { value: 0.2675, start: '2023-11-25T10:00:00.000+01:00', exportPrice: 0 }, { value: 0.2649, start: '2023-11-25T11:00:00.000+01:00', exportPrice: 0 }, { value: 0.2623, start: '2023-11-25T12:00:00.000+01:00', exportPrice: 0 }, { value: 0.2602, start: '2023-11-25T13:00:00.000+01:00', exportPrice: 0 }, { value: 0.2685, start: '2023-11-25T14:00:00.000+01:00', exportPrice: 0 }, { value: 0.2752, start: '2023-11-25T15:00:00.000+01:00', exportPrice: 0 }, { value: 0.2981, start: '2023-11-25T16:00:00.000+01:00', exportPrice: 0 }, { value: 0.309, start: '2023-11-25T17:00:00.000+01:00', exportPrice: 0 }, { value: 0.3126, start: '2023-11-25T18:00:00.000+01:00', exportPrice: 0 }, { value: 0.3127, start: '2023-11-25T19:00:00.000+01:00', exportPrice: 0 }, { value: 0.3055, start: '2023-11-25T20:00:00.000+01:00', exportPrice: 0 }, { value: 0.298, start: '2023-11-25T21:00:00.000+01:00', exportPrice: 0 }, { value: 0.2985, start: '2023-11-25T22:00:00.000+01:00', exportPrice: 0 }, { value: 0.2839, start: '2023-11-25T23:00:00.000+01:00', exportPrice: 0 }], schedule: [{ start: '2023-11-24T13:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: 0.05480444876110013, socStart: 71.7, socEnd: 72.07744110717012 }, { start: '2023-11-24T14:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.04701857889692907, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T15:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.1314, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T16:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.10784, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T17:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.13435, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T18:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.1584, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T19:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.15497999999999998, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T20:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.15018, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T21:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.15216, charge: 0, socStart: 72.07744110717012, socEnd: 72.07744110717012 }, { start: '2023-11-24T22:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.34999999999999964, socStart: 72.07744110717012, socEnd: 69.66697278761089 }, { start: '2023-11-24T23:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.08897, charge: 0, socStart: 69.66697278761089, socEnd: 69.66697278761089 }, { start: '2023-11-25T00:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.08728999999999999, charge: 0, socStart: 69.66697278761089, socEnd: 69.66697278761089 }, { start: '2023-11-25T01:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.34999999999999964, socStart: 69.66697278761089, socEnd: 67.25650446805166 }, { start: '2023-11-25T02:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.08631, charge: 0, socStart: 67.25650446805166, socEnd: 67.25650446805166 }, { start: '2023-11-25T03:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.34999999999999964, socStart: 67.25650446805166, socEnd: 64.84603614849243 }, { start: '2023-11-25T04:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.08736, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T05:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.12815, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T06:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.14575000000000002, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T07:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.2617007256713763, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T08:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.1333295542311699, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T09:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.03137724548769724, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T10:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.09616809153053435, charge: 0, socStart: 64.84603614849243, socEnd: 64.84603614849243 }, { start: '2023-11-25T11:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0, charge: 0.14455617914929952, socStart: 64.84603614849243, socEnd: 65.84160212059506 }, { start: '2023-11-25T12:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0, charge: 0.9152865824191991, socStart: 65.84160212059506, socEnd: 72.14522872127824 }, { start: '2023-11-25T13:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0, charge: 0.8177374529408006, socStart: 72.14522872127824, socEnd: 77.7770293613664 }, { start: '2023-11-25T14:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.04638067403599807, charge: 0, socStart: 77.7770293613664, socEnd: 77.7770293613664 }, { start: '2023-11-25T15:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.14905, charge: 0, socStart: 77.7770293613664, socEnd: 77.7770293613664 }, { start: '2023-11-25T16:00:00.000Z', activity: 0, name: 'idle', duration: 60, cost: 0.1236, charge: 0, socStart: 77.7770293613664, socEnd: 77.7770293613664 }, { start: '2023-11-25T17:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.5, socStart: 77.7770293613664, socEnd: 74.3335031905675 }, { start: '2023-11-25T18:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.5999999999999996, socStart: 74.3335031905675, socEnd: 70.20127178560882 }, { start: '2023-11-25T19:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.5999999999999996, socStart: 70.20127178560882, socEnd: 66.06904038065015 }, { start: '2023-11-25T20:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.5999999999999996, socStart: 66.06904038065015, socEnd: 61.93680897569147 }, { start: '2023-11-25T21:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.5999999999999996, socStart: 61.93680897569147, socEnd: 57.804577570732796 }, { start: '2023-11-25T22:00:00.000Z', activity: -1, name: 'discharging', duration: 60, cost: 0, charge: -0.34999999999999964, socStart: 57.804577570732796, socEnd: 55.394109251173575 }], cost: 2.501764869853705, excessPvEnergyUse: 'CHARGE_BATTERY', noBattery: { schedule: [{ start: '2023-11-24T13:00:00.000Z', activity: 0, name: 'idle', duration: 2040, cost: 0, charge: 0, socStart: 71.7, socEnd: 71.7 }], excessPvEnergyUse: 'GRID_FEED_IN', cost: 0 }, timestamp: 1700832840267 }
+      const inputPayload = {
+        consumptionForecast: [
+          { start: '2023-11-24T23:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T00:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T01:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T02:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T03:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T04:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T05:00:00.000Z', value: 0.5 },
+          { start: '2023-11-25T06:00:00.000Z', value: 0.55 },
+          { start: '2023-11-25T07:00:00.000Z', value: 1 },
+          { start: '2023-11-25T08:00:00.000Z', value: 1 },
+          { start: '2023-11-25T09:00:00.000Z', value: 1 },
+          { start: '2023-11-25T10:00:00.000Z', value: 2 },
+          { start: '2023-11-25T11:00:00.000Z', value: 1.5 },
+          { start: '2023-11-25T12:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T13:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T14:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T15:00:00.000Z', value: 0.5 },
+          { start: '2023-11-25T16:00:00.000Z', value: 0.4 },
+          { start: '2023-11-25T17:00:00.000Z', value: 0.5 },
+          { start: '2023-11-25T18:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T19:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T20:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T21:00:00.000Z', value: 0.6 },
+          { start: '2023-11-25T22:00:00.000Z', value: 0.35 },
+          { start: '2023-11-25T23:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T00:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T01:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T02:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T03:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T04:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T05:00:00.000Z', value: 0.5 },
+          { start: '2023-11-26T06:00:00.000Z', value: 0.55 },
+          { start: '2023-11-26T07:00:00.000Z', value: 1 },
+          { start: '2023-11-26T08:00:00.000Z', value: 1 },
+          { start: '2023-11-26T09:00:00.000Z', value: 1 },
+          { start: '2023-11-26T10:00:00.000Z', value: 2 },
+          { start: '2023-11-26T11:00:00.000Z', value: 1.5 },
+          { start: '2023-11-26T12:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T13:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T14:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T15:00:00.000Z', value: 0.5 },
+          { start: '2023-11-26T16:00:00.000Z', value: 0.4 },
+          { start: '2023-11-26T17:00:00.000Z', value: 0.5 },
+          { start: '2023-11-26T18:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T19:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T20:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T21:00:00.000Z', value: 0.6 },
+          { start: '2023-11-26T22:00:00.000Z', value: 0.35 },
+          { start: '2023-11-26T23:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T00:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T01:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T02:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T03:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T04:00:00.000Z', value: 0.35 },
+          { start: '2023-11-27T05:00:00.000Z', value: 0.5 }
+        ],
+        priceData: [
+          {
+            value: 0.2542,
+            start: '2023-11-25T00:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2494,
+            start: '2023-11-25T01:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2471,
+            start: '2023-11-25T02:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2466,
+            start: '2023-11-25T03:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2446,
+            start: '2023-11-25T04:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2496,
+            start: '2023-11-25T05:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2563,
+            start: '2023-11-25T06:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.265,
+            start: '2023-11-25T07:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2735,
+            start: '2023-11-25T08:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2705,
+            start: '2023-11-25T09:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2675,
+            start: '2023-11-25T10:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2649,
+            start: '2023-11-25T11:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2623,
+            start: '2023-11-25T12:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2602,
+            start: '2023-11-25T13:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2685,
+            start: '2023-11-25T14:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2752,
+            start: '2023-11-25T15:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2981,
+            start: '2023-11-25T16:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.309,
+            start: '2023-11-25T17:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3126,
+            start: '2023-11-25T18:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3127,
+            start: '2023-11-25T19:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3055,
+            start: '2023-11-25T20:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.298,
+            start: '2023-11-25T21:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2985,
+            start: '2023-11-25T22:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2839,
+            start: '2023-11-25T23:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2935,
+            start: '2023-11-26T00:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2872,
+            start: '2023-11-26T01:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2835,
+            start: '2023-11-26T02:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2805,
+            start: '2023-11-26T03:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.277,
+            start: '2023-11-26T04:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2777,
+            start: '2023-11-26T05:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2801,
+            start: '2023-11-26T06:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2863,
+            start: '2023-11-26T07:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2954,
+            start: '2023-11-26T08:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3009,
+            start: '2023-11-26T09:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2985,
+            start: '2023-11-26T10:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2978,
+            start: '2023-11-26T11:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2963,
+            start: '2023-11-26T12:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2923,
+            start: '2023-11-26T13:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2983,
+            start: '2023-11-26T14:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.308,
+            start: '2023-11-26T15:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.321,
+            start: '2023-11-26T16:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3325,
+            start: '2023-11-26T17:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3394,
+            start: '2023-11-26T18:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3324,
+            start: '2023-11-26T19:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3231,
+            start: '2023-11-26T20:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.307,
+            start: '2023-11-26T21:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.3029,
+            start: '2023-11-26T22:00:00.000+01:00',
+            exportPrice: 0
+          },
+          {
+            value: 0.2832,
+            start: '2023-11-26T23:00:00.000+01:00',
+            exportPrice: 0
+          }
+        ],
+        productionForecast: [
+          { start: '2023-11-24T12:00:00.000Z', value: 0 },
+          { start: '2023-11-24T13:00:00.000Z', value: 0.6548044487611 },
+          { start: '2023-11-24T14:00:00.000Z', value: 0.42478017742449997 },
+          { start: '2023-11-24T15:00:00.000Z', value: 0 },
+          { start: '2023-11-24T16:00:00.000Z', value: 0 },
+          { start: '2023-11-24T17:00:00.000Z', value: 0 },
+          { start: '2023-11-24T18:00:00.000Z', value: 0 },
+          { start: '2023-11-24T19:00:00.000Z', value: 0 },
+          { start: '2023-11-24T20:00:00.000Z', value: 0 },
+          { start: '2023-11-24T21:00:00.000Z', value: 0 },
+          { start: '2023-11-24T22:00:00.000Z', value: 0 },
+          { start: '2023-11-24T23:00:00.000Z', value: 0 },
+          { start: '2023-11-25T00:00:00.000Z', value: 0 },
+          { start: '2023-11-25T01:00:00.000Z', value: 0 },
+          { start: '2023-11-25T02:00:00.000Z', value: 0 },
+          { start: '2023-11-25T03:00:00.000Z', value: 0 },
+          { start: '2023-11-25T04:00:00.000Z', value: 0 },
+          { start: '2023-11-25T05:00:00.000Z', value: 0 },
+          { start: '2023-11-25T06:00:00.000Z', value: 0 },
+          { start: '2023-11-25T07:00:00.000Z', value: 0.045343363462299995 },
+          { start: '2023-11-25T08:00:00.000Z', value: 0.6782903417877 },
+          { start: '2023-11-25T09:00:00.000Z', value: 1.1011521565901001 },
+          { start: '2023-11-25T10:00:00.000Z', value: 1.0664654115466998 },
+          { start: '2023-11-25T11:00:00.000Z', value: 1.3851447361185 },
+          { start: '2023-11-25T12:00:00.000Z', value: 0.8696365091681999 },
+          { start: '2023-11-25T13:00:00.000Z', value: 0.9225947890016 },
+          { start: '2023-11-25T14:00:00.000Z', value: 0.3132915760618 },
+          { start: '2023-11-25T15:00:00.000Z', value: 0 },
+          { start: '2023-11-25T16:00:00.000Z', value: 0 },
+          { start: '2023-11-25T17:00:00.000Z', value: 0 },
+          { start: '2023-11-25T18:00:00.000Z', value: 0 },
+          { start: '2023-11-25T19:00:00.000Z', value: 0 },
+          { start: '2023-11-25T20:00:00.000Z', value: 0 },
+          { start: '2023-11-25T21:00:00.000Z', value: 0 },
+          { start: '2023-11-25T22:00:00.000Z', value: 0 },
+          { start: '2023-11-25T23:00:00.000Z', value: 0 },
+          { start: '2023-11-26T00:00:00.000Z', value: 0 },
+          { start: '2023-11-26T01:00:00.000Z', value: 0 },
+          { start: '2023-11-26T02:00:00.000Z', value: 0 },
+          { start: '2023-11-26T03:00:00.000Z', value: 0 },
+          { start: '2023-11-26T04:00:00.000Z', value: 0 },
+          { start: '2023-11-26T05:00:00.000Z', value: 0 },
+          { start: '2023-11-26T06:00:00.000Z', value: 0 },
+          { start: '2023-11-26T07:00:00.000Z', value: 0.205015455446 },
+          { start: '2023-11-26T08:00:00.000Z', value: 0.7977939626588 },
+          { start: '2023-11-26T09:00:00.000Z', value: 0.9177473865311 },
+          { start: '2023-11-26T10:00:00.000Z', value: 1.4847052805951 },
+          { start: '2023-11-26T11:00:00.000Z', value: 1.570298524285 },
+          { start: '2023-11-26T12:00:00.000Z', value: 1.5937238861826 },
+          { start: '2023-11-26T13:00:00.000Z', value: 1.3490278090381 },
+          { start: '2023-11-26T14:00:00.000Z', value: 0.6911178203213 },
+          { start: '2023-11-26T15:00:00.000Z', value: 0 },
+          { start: '2023-11-26T16:00:00.000Z', value: 0 },
+          { start: '2023-11-26T17:00:00.000Z', value: 0 },
+          { start: '2023-11-26T18:00:00.000Z', value: 0 },
+          { start: '2023-11-26T19:00:00.000Z', value: 0 },
+          { start: '2023-11-26T20:00:00.000Z', value: 0 },
+          { start: '2023-11-26T21:00:00.000Z', value: 0 },
+          { start: '2023-11-26T22:00:00.000Z', value: 0 },
+          { start: '2023-11-26T23:00:00.000Z', value: 0 },
+          { start: '2023-11-27T00:00:00.000Z', value: 0 },
+          { start: '2023-11-27T01:00:00.000Z', value: 0 },
+          { start: '2023-11-27T02:00:00.000Z', value: 0 },
+          { start: '2023-11-27T03:00:00.000Z', value: 0 },
+          { start: '2023-11-27T04:00:00.000Z', value: 0 },
+          { start: '2023-11-27T05:00:00.000Z', value: 0 },
+          { start: '2023-11-27T06:00:00.000Z', value: 0 },
+          { start: '2023-11-27T07:00:00.000Z', value: 0.4198514902153 },
+          { start: '2023-11-27T08:00:00.000Z', value: 0.6997289724642 },
+          { start: '2023-11-27T09:00:00.000Z', value: 0.9231165697801 },
+          { start: '2023-11-27T10:00:00.000Z', value: 0.9348332221655999 },
+          { start: '2023-11-27T11:00:00.000Z', value: 1.0581552457463 },
+          { start: '2023-11-27T12:00:00.000Z', value: 1.4414005960454999 },
+          { start: '2023-11-27T13:00:00.000Z', value: 0.9151747404305001 },
+          { start: '2023-11-27T14:00:00.000Z', value: 0.6291496917864 },
+          { start: '2023-11-27T15:00:00.000Z', value: 0 },
+          { start: '2023-11-27T16:00:00.000Z', value: 0 },
+          { start: '2023-11-27T17:00:00.000Z', value: 0 },
+          { start: '2023-11-27T18:00:00.000Z', value: 0 },
+          { start: '2023-11-27T19:00:00.000Z', value: 0 },
+          { start: '2023-11-27T20:00:00.000Z', value: 0 },
+          { start: '2023-11-27T21:00:00.000Z', value: 0 },
+          { start: '2023-11-27T22:00:00.000Z', value: 0 },
+          { start: '2023-11-27T23:00:00.000Z', value: 0 },
+          { start: '2023-11-28T00:00:00.000Z', value: 0 },
+          { start: '2023-11-28T01:00:00.000Z', value: 0 },
+          { start: '2023-11-28T02:00:00.000Z', value: 0 },
+          { start: '2023-11-28T03:00:00.000Z', value: 0 },
+          { start: '2023-11-28T04:00:00.000Z', value: 0 },
+          { start: '2023-11-28T05:00:00.000Z', value: 0 },
+          { start: '2023-11-28T06:00:00.000Z', value: 0 },
+          { start: '2023-11-28T07:00:00.000Z', value: 0.4019143954168 },
+          { start: '2023-11-28T08:00:00.000Z', value: 0.7075801039555 },
+          { start: '2023-11-28T09:00:00.000Z', value: 0.8609485886052001 },
+          { start: '2023-11-28T10:00:00.000Z', value: 0.9138277820859999 },
+          { start: '2023-11-28T11:00:00.000Z', value: 0.9692527938334 },
+          { start: '2023-11-28T12:00:00.000Z', value: 0.9446257555821 }
+        ],
+        soc: 16.7,
+        minSoc: 15,
+        schedule: [
+          {
+            start: '2023-11-25T12:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: 0.2696365091681998,
+            socStart: 16.7,
+            socEnd: 18.557000751847106
+          },
+          {
+            start: '2023-11-25T13:00:00.000Z',
+            activity: 1,
+            name: 'charging',
+            duration: 60,
+            cost: 0.7725832991530704,
+            charge: 3.2000000000000006,
+            socStart: 18.557000751847106,
+            socEnd: 40.595568244960056
+          },
+          {
+            start: '2023-11-25T14:00:00.000Z',
+            activity: 1,
+            name: 'charging',
+            duration: 60,
+            cost: 0.9595421582677927,
+            charge: 3.1999999999999993,
+            socStart: 40.595568244960056,
+            socEnd: 62.634135738073006
+          },
+          {
+            start: '2023-11-25T15:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5,
+            socStart: 62.634135738073006,
+            socEnd: 59.1906095672741
+          },
+          {
+            start: '2023-11-25T16:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.40000000000000036,
+            socStart: 59.1906095672741,
+            socEnd: 56.43578863063499
+          },
+          {
+            start: '2023-11-25T17:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5,
+            socStart: 56.43578863063499,
+            socEnd: 52.992262459836084
+          },
+          {
+            start: '2023-11-25T18:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5999999999999996,
+            socStart: 52.992262459836084,
+            socEnd: 48.8600310548774
+          },
+          {
+            start: '2023-11-25T19:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5999999999999996,
+            socStart: 48.8600310548774,
+            socEnd: 44.72779964991873
+          },
+          {
+            start: '2023-11-25T20:00:00.000Z',
+            activity: 1,
+            name: 'charging',
+            duration: 60,
+            cost: 1.1324,
+            charge: 3.200000000000001,
+            socStart: 44.72779964991873,
+            socEnd: 66.76636714303169
+          },
+          {
+            start: '2023-11-25T21:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5999999999999996,
+            socStart: 66.76636714303169,
+            socEnd: 62.63413573807301
+          },
+          {
+            start: '2023-11-25T22:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 62.63413573807301,
+            socEnd: 60.223667418513784
+          },
+          {
+            start: '2023-11-25T23:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 60.223667418513784,
+            socEnd: 57.81319909895456
+          },
+          {
+            start: '2023-11-26T00:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 57.81319909895456,
+            socEnd: 55.402730779395334
+          },
+          {
+            start: '2023-11-26T01:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 55.402730779395334,
+            socEnd: 52.992262459836105
+          },
+          {
+            start: '2023-11-26T02:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 52.992262459836105,
+            socEnd: 50.581794140276884
+          },
+          {
+            start: '2023-11-26T03:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 50.581794140276884,
+            socEnd: 48.171325820717655
+          },
+          {
+            start: '2023-11-26T04:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.34999999999999964,
+            socStart: 48.171325820717655,
+            socEnd: 45.76085750115843
+          },
+          {
+            start: '2023-11-26T05:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5,
+            socStart: 45.76085750115843,
+            socEnd: 42.31733133035953
+          },
+          {
+            start: '2023-11-26T06:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5499999999999998,
+            socStart: 42.31733133035953,
+            socEnd: 38.52945254248074
+          },
+          {
+            start: '2023-11-26T07:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.7949845445540005,
+            socStart: 38.52945254248074,
+            socEnd: 33.054352373376055
+          },
+          {
+            start: '2023-11-26T08:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.2022060373411998,
+            socStart: 33.054352373376055,
+            socEnd: 31.661748810420136
+          },
+          {
+            start: '2023-11-26T09:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.08225261346890012,
+            socStart: 31.661748810420136,
+            socEnd: 31.095270756226608
+          },
+          {
+            start: '2023-11-26T10:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5152947194049,
+            socStart: 31.095270756226608,
+            socEnd: 27.546409052336113
+          },
+          {
+            start: '2023-11-26T11:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: 0.07029852428499961,
+            socStart: 27.546409052336113,
+            socEnd: 28.03055866862399
+          },
+          {
+            start: '2023-11-26T12:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: 0.9937238861826003,
+            socStart: 28.03055866862399,
+            socEnd: 34.874387085859524
+          },
+          {
+            start: '2023-11-26T13:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: 0.7490278090381004,
+            socStart: 34.874387085859524,
+            socEnd: 40.03298081201724
+          },
+          {
+            start: '2023-11-26T14:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: 0.09111782032130034,
+            socStart: 40.03298081201724,
+            socEnd: 40.66051400982234
+          },
+          {
+            start: '2023-11-26T15:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5,
+            socStart: 40.66051400982234,
+            socEnd: 37.216987839023446
+          },
+          {
+            start: '2023-11-26T16:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.40000000000000036,
+            socStart: 37.216987839023446,
+            socEnd: 34.462166902384325
+          },
+          {
+            start: '2023-11-26T17:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.5,
+            socStart: 34.462166902384325,
+            socEnd: 31.01864073158543
+          },
+          {
+            start: '2023-11-26T18:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.6000000000000001,
+            socStart: 31.01864073158543,
+            socEnd: 26.886409326626747
+          },
+          {
+            start: '2023-11-26T19:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.6000000000000001,
+            socStart: 26.886409326626747,
+            socEnd: 22.75417792166807
+          },
+          {
+            start: '2023-11-26T20:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0,
+            charge: -0.6000000000000001,
+            socStart: 22.75417792166807,
+            socEnd: 18.62194651670939
+          },
+          {
+            start: '2023-11-26T21:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0.02244288049288294,
+            charge: -0.5259066342262035,
+            socStart: 18.62194651670939,
+            socEnd: 15
+          },
+          {
+            start: '2023-11-26T22:00:00.000Z',
+            activity: -1,
+            name: 'discharging',
+            duration: 60,
+            cost: 0.09912,
+            charge: 0,
+            socStart: 15,
+            socEnd: 15
+          }
+        ],
+        cost: 2.9860883379137464,
+        excessPvEnergyUse: 'CHARGE_BATTERY',
+        noBattery: {
+          schedule: [
+            {
+              start: '2023-11-25T12:00:00.000Z',
+              activity: 0,
+              name: 'idle',
+              duration: 2100,
+              cost: 0,
+              charge: 0,
+              socStart: 16.7,
+              socEnd: 16.7
+            }
+          ],
+          excessPvEnergyUse: 'GRID_FEED_IN',
+          cost: 0
+        }
+      }
 
       n1.receive({ payload: inputPayload })
     })
