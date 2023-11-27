@@ -68,9 +68,7 @@ const calculateDischargeScore = (props) => {
     efficiency
   } = props
 
-  // we assume half of the loss is on charge, and the other on discharge
-  const dischargeEfficiency = (1 - efficiency) / 2
-  const efficiencyMultiplyFactor = efficiency + dischargeEfficiency
+  const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
 
   const consumedFromProduction = Math.min(consumption, production)
 
@@ -79,15 +77,11 @@ const calculateDischargeScore = (props) => {
       ? Math.min(production - consumedFromProduction, maxCharge)
       : 0
 
-  const batteryChargeFromProductionAfterLoss =
-    batteryChargeFromProduction * efficiencyMultiplyFactor
-
   const consumedFromBattery = Math.min(
     consumption - consumedFromProduction,
     maxDischarge
   )
-  const consumedFromBatteryWithLoss =
-    consumedFromBattery + consumedFromBattery * dischargeEfficiency
+
   const soldFromProduction =
     production - consumedFromProduction - batteryChargeFromProduction
   const consumedFromGrid =
@@ -95,8 +89,10 @@ const calculateDischargeScore = (props) => {
 
   const cost = consumedFromGrid * importPrice - soldFromProduction * exportPrice
 
+  // we consume for example 1kWh from battery, but need ca. 1.05kWh, due to conversion loss
   const discharge =
-    batteryChargeFromProductionAfterLoss - consumedFromBatteryWithLoss
+    batteryChargeFromProduction * halfEfficiencyLoss -
+    (consumedFromBattery * 1) / halfEfficiencyLoss
 
   return [cost, discharge]
 }
@@ -112,8 +108,7 @@ const calculateNormalScore = (props) => {
     efficiency
   } = props
 
-  // we assume half of the loss is on charge, and the other on discharge
-  const chargeEfficiency = (1 - efficiency) / 2
+  const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
 
   const consumedFromProduction = Math.min(consumption, production)
   const batteryChargeFromProduction =
@@ -125,9 +120,10 @@ const calculateNormalScore = (props) => {
   const consumedFromGrid = consumption - consumedFromProduction
 
   const cost = importPrice * consumedFromGrid - exportPrice * soldFromProduction
-  const charge = batteryChargeFromProduction
-  const loss = chargeEfficiency * charge
-  return [cost, charge - loss]
+
+  // we charge for example 1kWh int battery, but only 0.95kWh will be stored effectively
+  const charge = batteryChargeFromProduction * halfEfficiencyLoss
+  return [cost, charge]
 }
 
 const calculateChargeScore = (props) => {
@@ -140,8 +136,7 @@ const calculateChargeScore = (props) => {
     efficiency
   } = props
 
-  // we assume half of the loss is on charge, and the other on discharge
-  const chargeEfficiency = (1 - efficiency) / 2
+  const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
 
   const consumedFromProduction = Math.min(consumption, production)
   const batteryChargeFromProduction = Math.min(
@@ -157,11 +152,12 @@ const calculateChargeScore = (props) => {
   const cost =
     (consumedFromGrid + chargedFromGrid) * importPrice -
     soldFromProduction * exportPrice
-  const charge = batteryChargeFromProduction + chargedFromGrid
 
-  const loss = charge * chargeEfficiency
+  // we charge for example 1kWh int battery, but only 0.95kWh will be stored effectively
+  const charge =
+    (batteryChargeFromProduction + chargedFromGrid) * halfEfficiencyLoss
 
-  return [cost, charge - loss]
+  return [cost, charge]
 }
 
 const calculateIntervalScore = (props) => {

@@ -241,7 +241,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([0, -1.05])
+      ).toEqual([0, -1.0526315789473684])
     })
 
     test('efficiency affects discharged energy, grid + PV consumption', () => {
@@ -259,7 +259,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([0, -1.05])
+      ).toEqual([0, -1.0526315789473684])
     })
 
     test('efficiency affects discharged energy, charge from PV', () => {
@@ -295,7 +295,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([4, -1.05])
+      ).toEqual([4, -1.0526315789473684])
     })
   })
 

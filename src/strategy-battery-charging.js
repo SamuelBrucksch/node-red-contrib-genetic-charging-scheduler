@@ -15,7 +15,7 @@ const node = (RED) => {
       config.averageConsumption = parseFloat(config.averageConsumption)
       config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
       config.batteryCost = parseFloat(config.batteryCost)
-      config.efficiency = 1 // TODO: fix efficiency parseInt(config.efficiency)
+      config.efficiency = parseInt(config.efficiency)
       RED.nodes.createNode(this, config)
 
       const {
@@ -52,7 +52,7 @@ const node = (RED) => {
           excessPvEnergyUse,
           soc: soc / 100,
           batteryCost,
-          efficiency,
+          efficiency: efficiency / 100,
           minSoc: minSoc / 100
         })
 
