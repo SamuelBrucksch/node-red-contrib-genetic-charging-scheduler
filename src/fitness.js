@@ -190,7 +190,6 @@ const calculatePeriodScore = (
     batteryCost,
     efficiency
   } = props
-  let cost = 0
   let currentCharge = _currentCharge
   const duration = period.duration / 60
   const maxCharge = Math.min(
@@ -216,8 +215,28 @@ const calculatePeriodScore = (
     batteryCost,
     efficiency
   })
-  cost += v[0]
+  const cost = v[0]
   currentCharge += v[1]
+
+  if (period.activity === 0 && cost === 0) {
+    // prefer discharge over idle mode, if idle is not really needed
+    const vAlternative = calculateIntervalScore({
+      activity: -1,
+      importPrice,
+      exportPrice,
+      consumption: consumption * duration,
+      production: production * duration,
+      maxCharge,
+      maxDischarge,
+      excessPvEnergyUse,
+      batteryCost,
+      efficiency
+    })
+
+    if (v[0] === vAlternative[0] && v[1] === vAlternative[1]) {
+      period.activity = -1
+    }
+  }
 
   return [cost, currentCharge - _currentCharge]
 }
