@@ -65,7 +65,8 @@ const calculateDischargeScore = (props) => {
     maxDischarge,
     maxCharge,
     excessPvEnergyUse,
-    efficiency
+    efficiency,
+    batteryCost
   } = props
 
   const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
@@ -87,12 +88,12 @@ const calculateDischargeScore = (props) => {
   const consumedFromGrid =
     consumption - consumedFromProduction - consumedFromBattery
 
-  const cost = consumedFromGrid * importPrice - soldFromProduction * exportPrice
+  const cost = consumedFromGrid * importPrice - soldFromProduction * exportPrice + consumedFromBattery * batteryCost
 
   // we consume for example 1kWh from battery, but need ca. 1.05kWh, due to conversion loss
   const discharge =
     batteryChargeFromProduction * halfEfficiencyLoss -
-    (consumedFromBattery * 1) / halfEfficiencyLoss
+    consumedFromBattery * (1 / halfEfficiencyLoss)
 
   return [cost, discharge]
 }
@@ -153,7 +154,7 @@ const calculateChargeScore = (props) => {
     (consumedFromGrid + chargedFromGrid) * importPrice -
     soldFromProduction * exportPrice
 
-  // we charge for example 1kWh int battery, but only 0.95kWh will be stored effectively
+  // we charge for example 1kWh into battery, but only 0.95kWh will be stored effectively
   const charge =
     (batteryChargeFromProduction + chargedFromGrid) * halfEfficiencyLoss
 
@@ -183,8 +184,8 @@ const calculatePeriodScore = (
     batteryMaxEnergy,
     batteryMaxInputPower,
     batteryMaxOutputPower,
-    batteryCost,
-    efficiency
+    efficiency,
+    batteryCost
   } = props
   let currentCharge = _currentCharge
   const duration = period.duration / 60
@@ -208,13 +209,13 @@ const calculatePeriodScore = (
     maxCharge,
     maxDischarge,
     excessPvEnergyUse,
-    batteryCost,
-    efficiency
+    efficiency,
+    batteryCost
   })
   const cost = v[0]
   currentCharge += v[1]
 
-  if (period.activity === 0 && cost === 0) {
+  if (period.activity === 0 && period.cost === 0) {
     // prefer discharge over idle mode, if idle is not really needed
     const vAlternative = calculateIntervalScore({
       activity: -1,
@@ -225,8 +226,8 @@ const calculatePeriodScore = (
       maxCharge,
       maxDischarge,
       excessPvEnergyUse,
-      batteryCost,
-      efficiency
+      efficiency,
+      batteryCost
     })
 
     if (v[0] === vAlternative[0] && v[1] === vAlternative[1]) {
@@ -247,27 +248,6 @@ const fitnessFunction = (props) => (phenotype) => {
   return cost
 }
 
-const calculateBatteryCost = (p, batteryCost) => {
-  return p.periods.reduce((batCost, period) => {
-    if (period.activity === -1 && period.charge < 0) {
-      return batCost + Math.abs(period.charge) * batteryCost
-    }
-    return batCost
-  }, 0)
-}
-
-const doesABeatBFunction = (props) => (p1, p2) => {
-  const { batteryCost } = props
-  const fitness1 = fitnessFunction(props)(p1)
-  const fitness2 = fitnessFunction(props)(p2)
-
-  // enhance costs with batterycost
-  const batteryCost1 = calculateBatteryCost(p1, batteryCost)
-  const batteryCost2 = calculateBatteryCost(p2, batteryCost)
-
-  return fitness1 - batteryCost1 >= fitness2 - batteryCost2
-}
-
 module.exports = {
   fitnessFunction,
   allPeriodsGenerator,
@@ -275,6 +255,5 @@ module.exports = {
   calculatePeriodScore,
   calculateDischargeScore,
   calculateChargeScore,
-  calculateNormalScore,
-  doesABeatBFunction
+  calculateNormalScore
 }
