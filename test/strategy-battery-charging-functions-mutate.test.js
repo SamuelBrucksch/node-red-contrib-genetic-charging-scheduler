@@ -1,4 +1,4 @@
-const { mockRandomForEach, mockRandom } = require('jest-mock-random')
+const { mockRandom } = require('jest-mock-random')
 const {
   mutationFunction
 } = require('../src/strategy-battery-charging-functions')
@@ -8,7 +8,7 @@ describe('Mutation', () => {
 
   test('should mutate to idle', () => {
     mockRandom(1 / 3)
-    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1 })
+    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1, input: [{ importPrice: 0 }] })
 
     const p = mutate({
       periods: [{ start: 0, activity: 1, duration: 10 }],
@@ -22,7 +22,7 @@ describe('Mutation', () => {
 
   test('should mutate to discharging', () => {
     mockRandom(2 / 3)
-    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1 })
+    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1, input: [{ importPrice: 0 }] })
 
     const p = mutate({
       periods: [{ start: 0, activity: 1, duration: 10 }],
@@ -36,7 +36,7 @@ describe('Mutation', () => {
 
   test('should mutate to charging', () => {
     mockRandom(0.9)
-    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1 })
+    const mutate = mutationFunction({ totalDuration: 120, mutationRate: 1, input: [{ importPrice: 0 }] })
 
     const p = mutate({
       periods: [{ start: 0, activity: -1, duration: 10 }],

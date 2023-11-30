@@ -141,7 +141,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxDischarge: 1,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 0
         })
       ).toEqual([0, -1])
     })
@@ -154,7 +155,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxDischarge: 0,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 0
         })
       ).toEqual([2, 0])
     })
@@ -167,7 +169,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxDischarge: 0.5,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 0
         })
       ).toEqual([1, -0.5])
     })
@@ -180,7 +183,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 1,
           maxDischarge: 1,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 0
         })
       ).toEqual([0, 0])
     })
@@ -193,7 +197,8 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxDischarge: 1,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 1
         })
       ).toEqual([-2, 0])
     })
@@ -208,12 +213,13 @@ describe('Fitness - calculateScore', () => {
           maxDischarge: 1,
           maxCharge: 1,
           excessPvEnergyUse: 1,
-          efficiency: 1
+          efficiency: 1,
+          batteryCost: 1
         })
       ).toEqual([0, 1])
     })
 
-    test('battery cost does not affect discharge price', () => {
+    test('battery cost affects discharge price', () => {
       const props = {
         importPrice: 2,
         exportPrice: 2,
@@ -225,7 +231,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([1, -0.5])
+      ).toEqual([1.5, -0.5])
     })
 
     test('efficiency affects discharged energy, grid only', () => {
@@ -241,7 +247,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([0, -1.05])
+      ).toEqual([0, -1.0526315789473684])
     })
 
     test('efficiency affects discharged energy, grid + PV consumption', () => {
@@ -259,7 +265,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([0, -1.05])
+      ).toEqual([0, -1.0526315789473684])
     })
 
     test('efficiency affects discharged energy, charge from PV', () => {
@@ -295,7 +301,7 @@ describe('Fitness - calculateScore', () => {
       }
       expect(
         calculateDischargeScore(props)
-      ).toEqual([4, -1.05])
+      ).toEqual([4, -1.0526315789473684])
     })
   })
 
