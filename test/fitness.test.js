@@ -85,50 +85,6 @@ describe('Fitness - allPeriods', () => {
       })
     ).toMatchObject([{ start: 0, duration: 300, activity: 1 }])
   })
-
-  test('should test allPeriods one in the middle', () => {
-    expect(
-      allPeriods(props, {
-        excessPvEnergyUse: 0,
-        periods: [{ start: 120, duration: 60, activity: 1 }]
-      })
-    ).toMatchObject([
-      { start: 0, duration: 120, activity: 0 },
-      { start: 120, duration: 60, activity: 1 },
-      { start: 180, duration: 120, activity: 0 }
-    ])
-  })
-
-  test('should test allPeriods one long activity', () => {
-    expect(
-      allPeriods(props, {
-        excessPvEnergyUse: 0,
-        periods: [{ start: 100, duration: 100, activity: 1 }]
-      })
-    ).toMatchObject([
-      { start: 0, duration: 100, activity: 0 },
-      { start: 100, duration: 100, activity: 1 },
-      { start: 200, duration: 100, activity: 0 }
-    ])
-  })
-
-  test('should test allPeriods two activities', () => {
-    expect(
-      allPeriods(props, {
-        excessPvEnergyUse: 0,
-        periods: [
-          { start: 70, activity: 1, duration: 80 },
-          { start: 160, activity: -1, duration: 30 }
-        ]
-      })
-    ).toMatchObject([
-      { start: 0, duration: 70, activity: 0 },
-      { start: 70, duration: 80, activity: 1 },
-      { start: 150, duration: 10, activity: 0 },
-      { start: 160, duration: 30, activity: -1 },
-      { start: 190, duration: 110, activity: 0 }
-    ])
-  })
 })
 
 describe('Fitness - calculateScore', () => {

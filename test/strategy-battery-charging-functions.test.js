@@ -1,4 +1,4 @@
-const { expect, describe } = require('@jest/globals')
+const { expect, describe, beforeAll } = require('@jest/globals')
 const { mockRandomForEach } = require('jest-mock-random')
 const {
   clamp,
@@ -47,6 +47,13 @@ describe('Crossover', () => {
 })
 
 describe('Calculate', () => {
+  beforeAll(() => {
+    const now = new Date()
+    now.setHours(now.getHours(), 0, 0, 0)
+    jest
+      .useFakeTimers()
+      .setSystemTime(now)
+  })
   test('calculate', () => {
     let now = Date.now()
     now = now - (now % (60 * 60 * 1000))

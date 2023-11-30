@@ -97,8 +97,15 @@ const generatePopulation = (props) => {
       const gene = { activity: 0, start: 0, duration: 0 }
       const random = Math.random()
       gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
-      gene.start = j * 60
-      gene.duration = 60
+      if (j === 0) {
+        const now = new Date()
+        gene.start = now.getMinutes()
+        gene.duration = 60 - gene.start
+      } else {
+        gene.start = j * 60
+        gene.duration = 60
+      }
+
       timePeriods.push(gene)
     }
 
