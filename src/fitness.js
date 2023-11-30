@@ -32,11 +32,6 @@ function * allPeriodsGenerator (props, phenotype) {
   }
 
   for (let i = 0; i < periods.length; i += 1) {
-    const normalPeriod = calculateNormalPeriod(
-      periods[i - 1] ?? { start: 0, duration: 0 },
-      periods[i]
-    )
-    if (normalPeriod.duration > 0) yield addCosts(normalPeriod)
     yield addCosts(periods[i])
   }
 
