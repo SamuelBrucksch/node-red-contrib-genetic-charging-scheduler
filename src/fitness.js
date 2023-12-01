@@ -1,15 +1,5 @@
-const end = (g) => g.start + g.duration
-
-const calculateNormalPeriod = (g1, g2) => {
-  return {
-    start: end(g1),
-    duration: g2.start - end(g1),
-    activity: 0
-  }
-}
-
 function * allPeriodsGenerator (props, phenotype) {
-  const { batteryMaxEnergy, soc, totalDuration, minSoc = 0 } = props
+  const { batteryMaxEnergy, soc, minSoc = 0 } = props
   const { excessPvEnergyUse, periods } = phenotype
 
   let currentCharge = soc * batteryMaxEnergy
@@ -34,14 +24,6 @@ function * allPeriodsGenerator (props, phenotype) {
   for (let i = 0; i < periods.length; i += 1) {
     yield addCosts(periods[i])
   }
-
-  const normalPeriod = calculateNormalPeriod(
-    periods.at(-1) ?? { start: 0, duration: 0 },
-    {
-      start: totalDuration
-    }
-  )
-  if (normalPeriod.duration > 0) yield addCosts(normalPeriod)
 }
 
 const allPeriods = (props, phenotype) => {

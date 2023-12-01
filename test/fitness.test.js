@@ -74,7 +74,7 @@ describe('Fitness - allPeriods', () => {
   test('should test allPeriods empty', () => {
     expect(
       allPeriods(props, { excessPvEnergyUse: 0, periods: [] })
-    ).toMatchObject([{ start: 0, duration: 300, activity: 0 }])
+    ).toMatchObject([])
   })
 
   test('should test allPeriods one activity', () => {
@@ -515,7 +515,7 @@ describe('Fitness', () => {
     const score = fitnessFunction(props)({
       periods: [
         { start: 0, duration: 60, activity: 1 },
-        { start: 60, duration: 60, activity: -1 }
+        { start: 60, duration: 120, activity: -1 }
       ],
       excessPvEnergyUse: 0
     })
