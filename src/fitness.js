@@ -192,8 +192,8 @@ const calculatePeriodScore = (
   const cost = v[0]
   currentCharge += v[1]
 
-  if (period.activity === 0 && period.cost === 0) {
-    // prefer discharge over idle mode, if idle is not really needed
+  if (period.activity !== -1 && period.cost === 0) {
+    // prefer discharge over idle/charge mode, if idle/charge is not really needed
     const vAlternative = calculateIntervalScore({
       activity: -1,
       importPrice,
