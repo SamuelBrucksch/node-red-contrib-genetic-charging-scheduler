@@ -14,8 +14,9 @@ const node = (RED) => {
       config.batteryMaxOutputPower = parseFloat(config.batteryMaxOutputPower)
       config.averageConsumption = parseFloat(config.averageConsumption)
       config.excessPvEnergyUse = parseInt(config.excessPvEnergyUse)
-      config.batteryCost = parseFloat(config.batteryCost)
+      config.batteryCost = parseFloat(config.batteryCost ?? 0)
       config.efficiency = parseInt(config.efficiency)
+      config.minPrice = parseFloat(config.minPrice ?? 0)
       RED.nodes.createNode(this, config)
 
       const {
@@ -28,7 +29,8 @@ const node = (RED) => {
         averageConsumption,
         excessPvEnergyUse, // 0=Feed to grid, 1=Charge
         efficiency,
-        batteryCost // battery price / (cycles * capacity)
+        batteryCost, // battery price / (cycles * capacity)
+        minPrice
       } = config
 
       this.on('input', async (msg, send, done) => {
@@ -53,7 +55,8 @@ const node = (RED) => {
           soc: soc / 100,
           batteryCost,
           efficiency: efficiency / 100,
-          minSoc: minSoc / 100
+          minSoc: minSoc / 100,
+          minPrice
         })
 
         const payload = msg.payload ?? {}

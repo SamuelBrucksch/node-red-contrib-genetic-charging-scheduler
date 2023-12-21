@@ -7,53 +7,58 @@
       populationSize: {
         value: 50,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       generations: {
         value: 150,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       mutationRate: {
         value: 3,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       batteryMaxEnergy: {
         value: 5,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       batteryMaxInputPower: {
         value: 2.5,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       batteryMaxOutputPower: {
         value: 3.5,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       averageConsumption: {
         value: 1,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       excessPvEnergyUse: {
         value: 0,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       batteryCost: {
-        value: 0.05,
+        value: 0.0,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
       efficiency: {
         value: 90,
         required: true,
-        validate: RED.validators.number(),
+        validate: RED.validators.number()
       },
+      minPrice: {
+        value: 0,
+        required: true,
+        validate: RED.validators.number()
+      }
     },
     oneditprepare: () => {
       $('#node-input-excessPvEnergyUse').typedInput({
@@ -63,42 +68,43 @@
             value: 'excessPvEnergyUse',
             options: [
               { value: '0', label: 'Grid feed-in' },
-              { value: '1', label: 'Charge battery' },
-            ],
-          },
-        ],
+              { value: '1', label: 'Charge battery' }
+            ]
+          }
+        ]
       })
       $('#node-input-averageConsumption').typedInput({
         type: 'num',
-        types: ['num'],
+        types: ['num']
       })
       $('#node-input-batteryMaxOutputPower').typedInput({
         type: 'num',
-        types: ['num'],
+        types: ['num']
       })
       $('#node-input-batteryMaxInputPower').typedInput({
         type: 'num',
-        types: ['num'],
+        types: ['num']
       })
       $('#node-input-batteryMaxEnergy').typedInput({
         type: 'num',
-        types: ['num'],
+        types: ['num']
       })
       $('#node-input-populationSize').typedInput({
         type: 'num',
-        types: ['num'],
+        types: ['num']
       })
       $('#node-input-generations').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-mutationRate').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-batteryCost').typedInput({ type: 'num', types: ['num'] })
       $('#node-input-efficiency').typedInput({ type: 'num', types: ['num'] })
+      $('#node-input-minPrice').typedInput({ type: 'num', types: ['num'] })
     },
     inputs: 1,
     outputs: 1,
     icon: 'font-awesome/fa-battery',
     label: function () {
       return this.name || 'Battery charging schedule'
-    },
+    }
   })
 </script>
 
@@ -171,6 +177,12 @@
       >System efficiency</label
     >
     <input type="text" style="width: 160px" id="node-input-efficiency" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-minPrice" style="width: 230px"
+      >Force charge below price</label
+    >
+    <input type="text" style="width: 160px" id="node-input-minPrice" />
   </div>
 
   <h3>Genetic algorithm</h3>
