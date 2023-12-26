@@ -1,4 +1,4 @@
-function * allPeriodsGenerator (props, phenotype) {
+function* allPeriodsGenerator(props, phenotype) {
   const { batteryMaxEnergy, soc, minSoc = 0 } = props
   const { excessPvEnergyUse, periods } = phenotype
 
@@ -42,8 +42,7 @@ const calculateDischargeScore = (props) => {
     maxDischarge,
     maxCharge,
     excessPvEnergyUse,
-    efficiency,
-    batteryCost
+    efficiency
   } = props
 
   const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
@@ -65,7 +64,7 @@ const calculateDischargeScore = (props) => {
   const consumedFromGrid =
     consumption - consumedFromProduction - consumedFromBattery
 
-  const cost = consumedFromGrid * importPrice - soldFromProduction * exportPrice + consumedFromBattery * batteryCost
+  const cost = consumedFromGrid * importPrice - soldFromProduction * exportPrice
 
   // we consume for example 1kWh from battery, but need ca. 1.05kWh, due to conversion loss
   const discharge =
@@ -111,7 +110,8 @@ const calculateChargeScore = (props) => {
     consumption,
     production,
     maxCharge,
-    efficiency
+    efficiency,
+    batteryCost
   } = props
 
   const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
@@ -129,7 +129,8 @@ const calculateChargeScore = (props) => {
 
   const cost =
     (consumedFromGrid + chargedFromGrid) * importPrice -
-    soldFromProduction * exportPrice
+    soldFromProduction * exportPrice +
+    batteryCost * (chargedFromGrid + batteryChargeFromProduction)
 
   // we charge for example 1kWh into battery, but only 0.95kWh will be stored effectively
   const charge =
@@ -192,8 +193,8 @@ const calculatePeriodScore = (
   const cost = v[0]
   currentCharge += v[1]
 
-  if (period.activity === 0 && period.cost === 0) {
-    // prefer discharge over idle mode, if idle is not really needed
+  if (period.activity !== -1 && period.cost === 0) {
+    // prefer discharge over idle/charge mode, if idle/charge is not really needed
     const vAlternative = calculateIntervalScore({
       activity: -1,
       importPrice,

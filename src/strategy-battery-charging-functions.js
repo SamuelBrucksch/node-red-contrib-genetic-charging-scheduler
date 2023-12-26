@@ -1,8 +1,5 @@
 const geneticAlgorithmConstructor = require('geneticalgorithm')
-const {
-  fitnessFunction,
-  allPeriodsGenerator
-} = require('./fitness')
+const { fitnessFunction, allPeriodsGenerator } = require('./fitness')
 
 const random = (min, max) => {
   return Math.floor(Math.random() * (max - min)) + min
@@ -26,11 +23,13 @@ const mutate = (g) => {
 }
 
 const mutationFunction = (props) => (phenotype) => {
-  const { mutationRate, input, avgImportPrice } = props
+  const { mutationRate, input, avgImportPrice, minPrice } = props
   for (let i = 0; i < phenotype.periods.length; i += 1) {
     const g = phenotype.periods[i]
     const { importPrice } = input[i]
-    if (importPrice >= avgImportPrice && g.activity === 1) {
+    if (importPrice <= minPrice) {
+      g.activity = 1
+    } else if (importPrice >= avgImportPrice && g.activity === 1) {
       // force mutation for schedules that try to charge above avg import price
       mutate(g)
     } else if (Math.random() < mutationRate) {
@@ -66,44 +65,29 @@ const crossoverFunction = (phenotypeA, phenotypeB) => {
   ]
 }
 
-const generateStandardPopulation = (activity, numberOfPricePeriods, excessPvEnergyUse) => {
-  const timePeriods = []
-  for (let j = 0; j < numberOfPricePeriods; j++) {
-    const gene = { activity: 0, start: 0, duration: 0 }
-    gene.activity = activity
-    if (j === 0) {
-      const now = new Date()
-      gene.start = now.getMinutes()
-      gene.duration = 60 - gene.start
-    } else {
-      gene.start = j * 60
-      gene.duration = 60
-    }
-
-    timePeriods.push(gene)
-  }
-
-  return {
-    periods: timePeriods,
-    excessPvEnergyUse
-  }
-}
-
 const generatePopulation = (props) => {
-  const { populationSize, numberOfPricePeriods, excessPvEnergyUse } = props
+  const {
+    populationSize,
+    numberOfPricePeriods,
+    excessPvEnergyUse,
+    input,
+    minPrice
+  } = props
   const population = []
-
-  // push some standard populations with charge only, discharge only and idle only
-  population.push(generateStandardPopulation(-1, numberOfPricePeriods, excessPvEnergyUse))
-  population.push(generateStandardPopulation(0, numberOfPricePeriods, excessPvEnergyUse))
-  population.push(generateStandardPopulation(1, numberOfPricePeriods, excessPvEnergyUse))
 
   for (let i = 0; i < populationSize; i++) {
     const timePeriods = []
     for (let j = 0; j < numberOfPricePeriods; j++) {
       const gene = { activity: 0, start: 0, duration: 0 }
       const random = Math.random()
-      gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
+
+      const { importPrice } = input[j]
+      if (importPrice <= minPrice) {
+        gene.activity = 1
+      } else {
+        gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
+      }
+
       if (j === 0) {
         const now = new Date()
         gene.start = now.getMinutes()
@@ -209,7 +193,8 @@ const calculateBatteryChargingStrategy = (config) => {
     input,
     totalDuration: numberOfPricePeriods * 60,
     numberOfPricePeriods,
-    avgImportPrice: input.reduce((val, i) => val + i.importPrice, 0) / input.length
+    avgImportPrice:
+      input.reduce((val, i) => val + i.importPrice, 0) / input.length
   }
 
   const options = {
