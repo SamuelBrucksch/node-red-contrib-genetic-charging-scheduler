@@ -110,31 +110,28 @@ const calculateChargeScore = (props) => {
     consumption,
     production,
     maxCharge,
-    efficiency,
-    batteryCost
+    efficiency
   } = props
 
   const halfEfficiencyLoss = (1 - efficiency) / 2 + efficiency
 
   const consumedFromProduction = Math.min(consumption, production)
-  const batteryChargeFromProduction = Math.min(
+  const chargedFromProduction = Math.min(
     production - consumedFromProduction,
     maxCharge
   )
 
   const soldFromProduction =
-    production - consumedFromProduction - batteryChargeFromProduction
+    production - consumedFromProduction - chargedFromProduction
   const consumedFromGrid = consumption - consumedFromProduction
-  const chargedFromGrid = maxCharge - batteryChargeFromProduction
+  const chargedFromGrid = maxCharge - chargedFromProduction
 
   const cost =
     (consumedFromGrid + chargedFromGrid) * importPrice -
-    soldFromProduction * exportPrice +
-    batteryCost * (chargedFromGrid + batteryChargeFromProduction)
+    soldFromProduction * exportPrice
 
   // we charge for example 1kWh into battery, but only 0.95kWh will be stored effectively
-  const charge =
-    (batteryChargeFromProduction + chargedFromGrid) * halfEfficiencyLoss
+  const charge = (chargedFromProduction + chargedFromGrid) * halfEfficiencyLoss
 
   return [cost, charge]
 }
@@ -162,8 +159,7 @@ const calculatePeriodScore = (
     batteryMaxEnergy,
     batteryMaxInputPower,
     batteryMaxOutputPower,
-    efficiency,
-    batteryCost
+    efficiency
   } = props
   let currentCharge = _currentCharge
   const duration = period.duration / 60
@@ -187,8 +183,7 @@ const calculatePeriodScore = (
     maxCharge,
     maxDischarge,
     excessPvEnergyUse,
-    efficiency,
-    batteryCost
+    efficiency
   })
   const cost = v[0]
   currentCharge += v[1]
@@ -204,8 +199,7 @@ const calculatePeriodScore = (
       maxCharge,
       maxDischarge,
       excessPvEnergyUse,
-      efficiency,
-      batteryCost
+      efficiency
     })
 
     if (v[0] === vAlternative[0] && v[1] === vAlternative[1]) {

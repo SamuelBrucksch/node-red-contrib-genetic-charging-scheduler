@@ -23,7 +23,14 @@ const mutate = (g) => {
 }
 
 const mutationFunction = (props) => (phenotype) => {
-  const { mutationRate, input, avgImportPrice, minPrice } = props
+  const {
+    mutationRate,
+    input,
+    avgImportPrice,
+    minPrice,
+    batteryCost,
+    batteryEnergyCost
+  } = props
   for (let i = 0; i < phenotype.periods.length; i += 1) {
     const g = phenotype.periods[i]
     const { importPrice } = input[i]
@@ -32,6 +39,12 @@ const mutationFunction = (props) => (phenotype) => {
     } else if (importPrice >= avgImportPrice && g.activity === 1) {
       // force mutation for schedules that try to charge above avg import price
       mutate(g)
+    } else if (batteryEnergyCost) {
+      if (importPrice >= batteryCost + batteryEnergyCost) {
+        g.activity = Math.random() <= 0.5 ? -1 : 0
+      } else if (importPrice < batteryCost + batteryEnergyCost) {
+        g.activity = Math.random() <= 0.5 ? 1 : 0
+      }
     } else if (Math.random() < mutationRate) {
       // Mutate action
       mutate(g)
@@ -71,7 +84,9 @@ const generatePopulation = (props) => {
     numberOfPricePeriods,
     excessPvEnergyUse,
     input,
-    minPrice
+    minPrice,
+    batteryEnergyCost,
+    batteryCost
   } = props
   const population = []
 
@@ -84,6 +99,12 @@ const generatePopulation = (props) => {
       const { importPrice } = input[j]
       if (importPrice <= minPrice) {
         gene.activity = 1
+      } else if (batteryEnergyCost) {
+        if (importPrice >= batteryCost + batteryEnergyCost) {
+          gene.activity = Math.random() <= 0.5 ? -1 : 0
+        } else if (importPrice < batteryCost + batteryEnergyCost) {
+          gene.activity = Math.random() <= 0.5 ? 1 : 0
+        }
       } else {
         gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
       }
@@ -145,6 +166,32 @@ const toSchedule = (props, phenotype) => {
   return schedule
 }
 
+const batteryEnergyCostFromHistory = (config) => {
+  const { priceHistory, chargingHistory, batteryMaxEnergy } = config
+
+  if (!priceHistory?.length) return
+
+  let charged = 0
+  let cost = 0
+  for (let i = priceHistory.length - 1; i > 0; i--) {
+    if (charged >= batteryMaxEnergy) {
+      // only consider the last full cycle for price calculation
+      break
+    }
+    const v = priceHistory[i]
+    const importPrice = v.importPrice ?? v.value
+    const exportPrice = v.exportPrice ?? 0
+    const element = chargingHistory.find(
+      (c) => new Date(c.start).getTime() === new Date(v.start).getTime()
+    )
+    charged += element.fromGrid + element.fromProduction
+    cost +=
+      element.fromGrid * importPrice + element.fromProduction * exportPrice
+  }
+
+  return cost / charged
+}
+
 const mergeInput = (config) => {
   const {
     averageConsumption,
@@ -162,7 +209,7 @@ const mergeInput = (config) => {
       return {
         start: new Date(v.start),
         importPrice: v.importPrice ?? v.value,
-        exportPrice: v.exportPrice ?? v.importPrice ?? v.value,
+        exportPrice: v.exportPrice ?? 0,
         consumption:
           consumptionForecast.find(
             (c) => new Date(c.start).getTime() === new Date(v.start).getTime()
@@ -185,6 +232,8 @@ const calculateBatteryChargingStrategy = (config) => {
   const input = mergeInput(config)
   if (input === undefined || input.length === 0) return {}
 
+  const batteryEnergyCost = batteryEnergyCostFromHistory(config)
+
   // day ahead prices get announced at 13:00, then we get them until 23:00 next day, so 35h is max
   const numberOfPricePeriods = Math.min(35, input.length)
 
@@ -194,7 +243,8 @@ const calculateBatteryChargingStrategy = (config) => {
     totalDuration: numberOfPricePeriods * 60,
     numberOfPricePeriods,
     avgImportPrice:
-      input.reduce((val, i) => val + i.importPrice, 0) / input.length
+      input.reduce((val, i) => val + i.importPrice, 0) / input.length,
+    batteryEnergyCost
   }
 
   const options = {
