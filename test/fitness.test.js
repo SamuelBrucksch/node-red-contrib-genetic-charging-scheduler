@@ -58,7 +58,6 @@ beforeEach(() => {
     batteryMaxInputPower: 1,
     batteryMaxOutputPower: 2,
     soc: 1,
-    batteryCost: 0,
     efficiency: 1
   }
   dischargeProps = {
@@ -237,7 +236,6 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([2, 0])
@@ -252,7 +250,6 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 1,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([4, 1])
@@ -266,7 +263,6 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 0,
           maxCharge: 0.5,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([3, 0.5])
@@ -281,7 +277,6 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 1,
           maxCharge: 1,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([2, 1])
@@ -296,7 +291,6 @@ describe('Fitness - calculateScore', () => {
           consumption: 1,
           production: 2,
           maxCharge: 1,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([0, 1])
@@ -312,7 +306,6 @@ describe('Fitness - calculateScore', () => {
           production: 3,
           maxCharge: 1,
           excessPvEnergyUse: 1,
-          batteryCost: 0,
           efficiency: 1
         })
       ).toEqual([-2, 1])
@@ -326,7 +319,6 @@ describe('Fitness - calculateScore', () => {
         consumption: 1,
         production: 2,
         maxCharge: 1,
-        batteryCost: 0,
         efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
       }
       expect(calculateChargeScore(props)).toEqual([0, 0.95])
@@ -340,7 +332,6 @@ describe('Fitness - calculateScore', () => {
         consumption: 1,
         production: 0,
         maxCharge: 1,
-        batteryCost: 0,
         efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
       }
       expect(calculateChargeScore(props)).toEqual([4, 0.95])
@@ -354,58 +345,9 @@ describe('Fitness - calculateScore', () => {
         consumption: 1,
         production: 1,
         maxCharge: 1,
-        batteryCost: 0,
         efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
       }
       expect(calculateChargeScore(props)).toEqual([2, 0.95])
-    })
-
-    test('battery cost affects charging from grid', () => {
-      const props = {
-        duration: 1,
-        importPrice: 2,
-        exportPrice: 0,
-        consumption: 0,
-        production: 0,
-        maxCharge: 1,
-        batteryCost: 1,
-        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
-      }
-      expect(calculateChargeScore(props)).toEqual([
-        props.importPrice + props.batteryCost,
-        0.95
-      ])
-    })
-
-    test('battery cost affects charging from production', () => {
-      const props = {
-        duration: 1,
-        importPrice: 2,
-        exportPrice: 0,
-        consumption: 0,
-        production: 1,
-        maxCharge: 1,
-        batteryCost: 1,
-        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
-      }
-      expect(calculateChargeScore(props)).toEqual([props.batteryCost, 0.95])
-    })
-
-    test('battery cost affects charging from production and battery cost', () => {
-      const props = {
-        duration: 1,
-        importPrice: 2,
-        exportPrice: 0,
-        consumption: 0,
-        production: 1,
-        maxCharge: 2,
-        batteryCost: 1,
-        efficiency: 0.9 // 0.9 is overall efficiency, so we make it simple and use 0.05 for charging and 0.05 for discharging
-      }
-      expect(calculateChargeScore(props)).toEqual([
-        props.batteryCost * props.maxCharge + props.importPrice,
-        1.9
-      ])
     })
   })
 

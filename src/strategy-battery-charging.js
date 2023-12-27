@@ -37,6 +37,10 @@ const node = (RED) => {
         const priceData = msg.payload?.priceData ?? []
         const consumptionForecast = msg.payload?.consumptionForecast ?? []
         const productionForecast = msg.payload?.productionForecast ?? []
+
+        const chargingHistory = msg.payload?.chargingHistory ?? []
+        const priceHistory = msg.payload?.priceHistory ?? []
+
         const soc = msg.payload?.soc
         const minSoc = msg.payload?.minSoc ?? 0
 
@@ -56,7 +60,9 @@ const node = (RED) => {
           batteryCost,
           efficiency: efficiency / 100,
           minSoc: minSoc / 100,
-          minPrice
+          minPrice,
+          chargingHistory,
+          priceHistory
         })
 
         const payload = msg.payload ?? {}
