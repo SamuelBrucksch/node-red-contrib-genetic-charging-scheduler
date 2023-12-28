@@ -22,32 +22,35 @@ const mutate = (g) => {
   }
 }
 
+const cleanupGene = (g, batteryEnergyCost, batteryCost, importPrice) => {
+  if (batteryEnergyCost && batteryCost) {
+    if (g.activity === -1 && batteryEnergyCost + batteryCost > importPrice) {
+      mutate(g)
+    }
+  }
+}
+
 const mutationFunction = (props) => (phenotype) => {
   const {
     mutationRate,
     input,
     avgImportPrice,
     minPrice,
-    batteryCost,
-    batteryEnergyCost
+    batteryEnergyCost,
+    batteryCost
   } = props
   for (let i = 0; i < phenotype.periods.length; i += 1) {
     const g = phenotype.periods[i]
     const { importPrice } = input[i]
     if (importPrice <= minPrice) {
       g.activity = 1
-    } else if (importPrice >= avgImportPrice && g.activity === 1) {
+    } else if (importPrice > avgImportPrice && g.activity === 1) {
       // force mutation for schedules that try to charge above avg import price
       mutate(g)
-    } else if (batteryEnergyCost) {
-      if (importPrice >= batteryCost + batteryEnergyCost) {
-        g.activity = Math.random() <= 0.5 ? -1 : 0
-      } else if (importPrice < batteryCost + batteryEnergyCost) {
-        g.activity = Math.random() <= 0.5 ? 1 : 0
-      }
     } else if (Math.random() < mutationRate) {
       // Mutate action
       mutate(g)
+      cleanupGene(g, batteryEnergyCost, batteryCost, importPrice)
     }
   }
   return {
@@ -86,7 +89,8 @@ const generatePopulation = (props) => {
     input,
     minPrice,
     batteryEnergyCost,
-    batteryCost
+    batteryCost,
+    avgImportPrice
   } = props
   const population = []
 
@@ -94,19 +98,16 @@ const generatePopulation = (props) => {
     const timePeriods = []
     for (let j = 0; j < numberOfPricePeriods; j++) {
       const gene = { activity: 0, start: 0, duration: 0 }
-      const random = Math.random()
 
       const { importPrice } = input[j]
       if (importPrice <= minPrice) {
         gene.activity = 1
-      } else if (batteryEnergyCost) {
-        if (importPrice >= batteryCost + batteryEnergyCost) {
-          gene.activity = Math.random() <= 0.5 ? -1 : 0
-        } else if (importPrice < batteryCost + batteryEnergyCost) {
-          gene.activity = Math.random() <= 0.5 ? 1 : 0
-        }
+      } else if (importPrice > avgImportPrice) {
+        gene.activity = Math.random() <= 0.5 ? -1 : 0
       } else {
+        const random = Math.random()
         gene.activity = random <= 1 / 3 ? -1 : random <= 2 / 3 ? 0 : 1
+        cleanupGene(gene, batteryEnergyCost, batteryCost, importPrice)
       }
 
       if (j === 0) {
@@ -184,6 +185,9 @@ const batteryEnergyCostFromHistory = (config) => {
     const element = chargingHistory.find(
       (c) => new Date(c.start).getTime() === new Date(v.start).getTime()
     )
+
+    if (!element) continue
+
     charged += element.fromGrid + element.fromProduction
     cost +=
       element.fromGrid * importPrice + element.fromProduction * exportPrice
